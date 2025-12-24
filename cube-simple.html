@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cubo 3D com Botão 3D</title>
+    <style>
+      :root {
+        --cube-size: 200px;
+        --cube-half: 100px;
+        --btn-size: 40px;
+        --btn-half: 20px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        overflow: hidden;
+      }
+
+      .scene {
+        perspective: 800px;
+      }
+
+      .cube {
+        width: var(--cube-size);
+        height: var(--cube-size);
+        position: relative;
+        transform-style: preserve-3d;
+        cursor: grab;
+      }
+
+      .cube:active {
+        cursor: grabbing;
+      }
+
+      .face {
+        position: absolute;
+        width: var(--cube-size);
+        height: var(--cube-size);
+        background: #e74c3c;
+        transform-style: preserve-3d;
+      }
+
+      .front {
+        transform: translateZ(var(--cube-half));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .back {
+        transform: rotateY(180deg) translateZ(var(--cube-half));
+        background: #c0392b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .right {
+        transform: rotateY(90deg) translateZ(var(--cube-half));
+        background: #cb4335;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .left {
+        transform: rotateY(-90deg) translateZ(var(--cube-half));
+        background: #cb4335;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .top {
+        transform: rotateX(90deg) translateZ(var(--cube-half));
+        background: #ec7063;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .bottom {
+        transform: rotateX(-90deg) translateZ(var(--cube-half));
+        background: #a93226;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .button-3d {
+        width: var(--btn-size);
+        height: var(--btn-size);
+        position: relative;
+        transform-style: preserve-3d;
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+
+      .button-3d.pressed {
+        transform: translateZ(-15px);
+      }
+
+      .btn-face {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+      }
+
+      .btn-front {
+        transform: translateZ(var(--btn-half));
+        background: #3498db;
+      }
+      .btn-back {
+        transform: rotateY(180deg) translateZ(var(--btn-half));
+        background: #1a5276;
+      }
+      .btn-right {
+        transform: rotateY(90deg) translateZ(var(--btn-half));
+        background: #2980b9;
+      }
+      .btn-left {
+        transform: rotateY(-90deg) translateZ(var(--btn-half));
+        background: #2471a3;
+      }
+      .btn-top {
+        transform: rotateX(90deg) translateZ(var(--btn-half));
+        background: #5dade2;
+      }
+      .btn-bottom {
+        transform: rotateX(-90deg) translateZ(var(--btn-half));
+        background: #1a5276;
+      }
+
+      /* Botão verde cilíndrico */
+      .button-cylinder {
+        width: var(--btn-size);
+        height: var(--btn-size);
+        position: relative;
+        transform-style: preserve-3d;
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+
+      .button-cylinder.pressed {
+        transform: translateZ(-15px);
+      }
+
+      .cylinder-top {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+        background: radial-gradient(
+          circle at 35% 35%,
+          #5dffb0,
+          #2ecc71 50%,
+          #27ae60
+        );
+        border-radius: 50%;
+        transform: translateZ(19px);
+      }
+
+      .cylinder-bottom {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+        background: #1e8449;
+        border-radius: 50%;
+        transform: translateZ(-19px);
+      }
+
+      .cylinder-body {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+        transform-style: preserve-3d;
+        transform: rotateX(90deg);
+      }
+
+      .cylinder-panel {
+        position: absolute;
+        width: 6px;
+        height: var(--btn-size);
+        left: 50%;
+        top: 50%;
+        margin-left: -3px;
+        margin-top: calc(var(--btn-half) * -1);
+        background: linear-gradient(to bottom, #2ecc71, #27ae60, #1e8449);
+      }
+
+      /* Botão amarelo alavanca */
+      .button-lever {
+        width: var(--btn-size);
+        height: var(--btn-size);
+        position: relative;
+        transform-style: preserve-3d;
+        cursor: pointer;
+        transform: rotateX(-90deg) translateZ(20px);
+      }
+
+      /* Base da alavanca - mesmo estilo do botão azul */
+      .lever-base {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+        transform-style: preserve-3d;
+      }
+
+      .lever-base-face {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+      }
+
+      .lever-base-front {
+        transform: translateZ(var(--btn-half));
+        background: #d4ac0d;
+      }
+      .lever-base-back {
+        transform: rotateY(180deg) translateZ(var(--btn-half));
+        background: #7d6608;
+      }
+      .lever-base-right {
+        transform: rotateY(90deg) translateZ(var(--btn-half));
+        background: #b7950b;
+      }
+      .lever-base-left {
+        transform: rotateY(-90deg) translateZ(var(--btn-half));
+        background: #9a7d0a;
+      }
+      .lever-base-top {
+        transform: rotateX(90deg) translateZ(var(--btn-half));
+        background: #f4d03f;
+      }
+      .lever-base-bottom {
+        transform: rotateX(-90deg) translateZ(var(--btn-half));
+        background: #7d6608;
+      }
+
+      /* Haste da alavanca */
+      .lever-handle {
+        position: absolute;
+        width: 10px;
+        height: 35px;
+        left: 15px;
+        top: -15px;
+        transform-style: preserve-3d;
+        transform-origin: center bottom;
+        transform: rotateX(-30deg);
+        transition: transform 0.2s ease;
+      }
+
+      .button-lever.on .lever-handle {
+        transform: rotateX(30deg);
+      }
+
+      .lever-handle-face {
+        position: absolute;
+      }
+
+      .lever-handle-front {
+        width: 10px;
+        height: 35px;
+        transform: translateZ(5px);
+        background: #f7dc6f;
+      }
+      .lever-handle-back {
+        width: 10px;
+        height: 35px;
+        transform: translateZ(-5px);
+        background: #b7950b;
+      }
+      .lever-handle-right {
+        width: 10px;
+        height: 35px;
+        left: 5px;
+        transform: rotateY(90deg);
+        background: #d4ac0d;
+      }
+      .lever-handle-left {
+        width: 10px;
+        height: 35px;
+        left: -5px;
+        transform: rotateY(90deg);
+        background: #d4ac0d;
+      }
+      .lever-handle-top {
+        width: 10px;
+        height: 10px;
+        top: 0;
+        transform: rotateX(90deg) translateZ(5px);
+        background: #f9e79f;
+      }
+      .lever-handle-bottom {
+        width: 10px;
+        height: 10px;
+        top: 28px;
+        transform: rotateX(90deg) translateZ(5px);
+        background: #7d6608;
+      }
+
+      /* Cilindro roxo */
+      .button-cylinder.purple .cylinder-top {
+        background: radial-gradient(
+          circle at 35% 35%,
+          #bb8fce,
+          #9b59b6 50%,
+          #7d3c98
+        );
+      }
+      .button-cylinder.purple .cylinder-bottom {
+        background: #5b2c6f;
+      }
+      .button-cylinder.purple .cylinder-panel {
+        background: linear-gradient(to bottom, #9b59b6, #7d3c98, #5b2c6f);
+      }
+
+      /* Botão laranja */
+      .button-3d.orange .btn-front {
+        background: #e67e22;
+      }
+      .button-3d.orange .btn-back {
+        background: #935116;
+      }
+      .button-3d.orange .btn-right {
+        background: #ca6f1e;
+      }
+      .button-3d.orange .btn-left {
+        background: #b9770e;
+      }
+      .button-3d.orange .btn-top {
+        background: #f39c12;
+      }
+      .button-3d.orange .btn-bottom {
+        background: #935116;
+      }
+
+      /* Alavanca ciano */
+      .button-lever.cyan .lever-base-front {
+        background: #17a2b8;
+      }
+      .button-lever.cyan .lever-base-back {
+        background: #0c5460;
+      }
+      .button-lever.cyan .lever-base-right {
+        background: #138496;
+      }
+      .button-lever.cyan .lever-base-left {
+        background: #117a8b;
+      }
+      .button-lever.cyan .lever-base-top {
+        background: #1abc9c;
+      }
+      .button-lever.cyan .lever-base-bottom {
+        background: #0c5460;
+      }
+      .button-lever.cyan .lever-handle-front {
+        background: #48c9b0;
+      }
+      .button-lever.cyan .lever-handle-back {
+        background: #117a8b;
+      }
+      .button-lever.cyan .lever-handle-right {
+        background: #17a2b8;
+      }
+      .button-lever.cyan .lever-handle-left {
+        background: #17a2b8;
+      }
+      .button-lever.cyan .lever-handle-top {
+        background: #76d7c4;
+      }
+      .button-lever.cyan .lever-handle-bottom {
+        background: #0c5460;
+      }
+
+      /* Manivela azul */
+      .button-crank {
+        width: var(--btn-size);
+        height: var(--btn-size);
+        position: relative;
+        transform-style: preserve-3d;
+        cursor: pointer;
+      }
+
+      .crank-base {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        left: 5px;
+        top: 5px;
+        transform-style: preserve-3d;
+      }
+
+      .crank-base-top {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: radial-gradient(
+          circle at 35% 35%,
+          #85c1e9,
+          #5dade2 50%,
+          #3498db
+        );
+        border-radius: 50%;
+        transform: translateZ(7px);
+      }
+
+      .crank-base-bottom {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: #1a5276;
+        border-radius: 50%;
+        transform: translateZ(-7px);
+      }
+
+      .crank-base-body {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        transform-style: preserve-3d;
+        transform: rotateX(90deg);
+      }
+
+      .crank-base-panel {
+        position: absolute;
+        width: 5px;
+        height: 15px;
+        left: 50%;
+        top: 50%;
+        margin-left: -2.5px;
+        margin-top: -7.5px;
+        background: linear-gradient(to bottom, #3498db, #2980b9, #1a5276);
+      }
+
+      .crank-arm {
+        position: absolute;
+        width: var(--btn-size);
+        height: var(--btn-size);
+        transform-style: preserve-3d;
+        transform: translateZ(10px);
+      }
+
+      .crank-shaft {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        left: 16px;
+        top: 16px;
+        background: #2471a3;
+        border-radius: 50%;
+        transform: translateZ(5px);
+      }
+
+      .crank-handle-bar {
+        position: absolute;
+        width: 30px;
+        height: 6px;
+        left: 20px;
+        top: 17px;
+        transform-style: preserve-3d;
+      }
+
+      .crank-bar-face {
+        position: absolute;
+      }
+
+      .crank-bar-front {
+        width: 30px;
+        height: 6px;
+        background: #3498db;
+        transform: translateZ(3px);
+      }
+
+      .crank-bar-back {
+        width: 30px;
+        height: 6px;
+        background: #1a5276;
+        transform: translateZ(-3px);
+      }
+
+      .crank-bar-top {
+        width: 30px;
+        height: 6px;
+        background: #5dade2;
+        transform: rotateX(90deg) translateZ(-3px);
+      }
+
+      .crank-bar-bottom {
+        width: 30px;
+        height: 6px;
+        background: #1a5276;
+        transform: rotateX(-90deg) translateZ(-3px);
+      }
+
+      .crank-bar-right {
+        width: 6px;
+        height: 6px;
+        background: #2980b9;
+        transform: rotateY(90deg) translateZ(27px);
+      }
+
+      .crank-bar-left {
+        width: 6px;
+        height: 6px;
+        background: #2471a3;
+        transform: rotateY(-90deg) translateZ(3px);
+      }
+
+      .crank-knob {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        left: 44px;
+        top: 14px;
+        transform-style: preserve-3d;
+      }
+
+      .crank-knob-top {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: radial-gradient(
+          circle at 35% 35%,
+          #85c1e9,
+          #5dade2 50%,
+          #3498db
+        );
+        border-radius: 50%;
+        transform: translateZ(5px);
+      }
+
+      .crank-knob-bottom {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #1a5276;
+        border-radius: 50%;
+        transform: translateZ(-5px);
+      }
+
+      .crank-knob-body {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        transform-style: preserve-3d;
+        transform: rotateX(90deg);
+      }
+
+      .crank-knob-panel {
+        position: absolute;
+        width: 4px;
+        height: 10px;
+        left: 50%;
+        top: 50%;
+        margin-left: -2px;
+        margin-top: -5px;
+        background: linear-gradient(to bottom, #3498db, #2980b9, #1a5276);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene">
+      <div class="cube" id="cube">
+        <div class="face front">
+          <div class="button-crank" id="btn3d-crank">
+            <div class="crank-base">
+              <div class="crank-base-top"></div>
+              <div class="crank-base-bottom"></div>
+              <div class="crank-base-body" id="crank-base-body"></div>
+            </div>
+            <div class="crank-arm" id="crank-arm">
+              <div class="crank-shaft"></div>
+              <div class="crank-handle-bar">
+                <div class="crank-bar-face crank-bar-front"></div>
+                <div class="crank-bar-face crank-bar-back"></div>
+                <div class="crank-bar-face crank-bar-top"></div>
+                <div class="crank-bar-face crank-bar-bottom"></div>
+                <div class="crank-bar-face crank-bar-right"></div>
+                <div class="crank-bar-face crank-bar-left"></div>
+              </div>
+              <div class="crank-knob">
+                <div class="crank-knob-top"></div>
+                <div class="crank-knob-bottom"></div>
+                <div class="crank-knob-body" id="crank-knob-body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="face back">
+          <div class="button-cylinder" id="btn3d-green">
+            <div class="cylinder-top"></div>
+            <div class="cylinder-bottom"></div>
+            <div class="cylinder-body" id="cylinder-body"></div>
+          </div>
+        </div>
+        <div class="face right">
+          <div class="button-cylinder purple" id="btn3d-purple">
+            <div class="cylinder-top"></div>
+            <div class="cylinder-bottom"></div>
+            <div class="cylinder-body" id="cylinder-body-purple"></div>
+          </div>
+        </div>
+        <div class="face left">
+          <div class="button-3d orange" id="btn3d-orange">
+            <div class="btn-face btn-front"></div>
+            <div class="btn-face btn-back"></div>
+            <div class="btn-face btn-right"></div>
+            <div class="btn-face btn-left"></div>
+            <div class="btn-face btn-top"></div>
+            <div class="btn-face btn-bottom"></div>
+          </div>
+        </div>
+        <div class="face top">
+          <div class="button-lever" id="btn3d-yellow">
+            <div class="lever-base">
+              <div class="lever-base-face lever-base-front"></div>
+              <div class="lever-base-face lever-base-back"></div>
+              <div class="lever-base-face lever-base-right"></div>
+              <div class="lever-base-face lever-base-left"></div>
+              <div class="lever-base-face lever-base-top"></div>
+              <div class="lever-base-face lever-base-bottom"></div>
+            </div>
+            <div class="lever-handle">
+              <div class="lever-handle-face lever-handle-front"></div>
+              <div class="lever-handle-face lever-handle-back"></div>
+              <div class="lever-handle-face lever-handle-right"></div>
+              <div class="lever-handle-face lever-handle-left"></div>
+              <div class="lever-handle-face lever-handle-top"></div>
+              <div class="lever-handle-face lever-handle-bottom"></div>
+            </div>
+          </div>
+        </div>
+        <div class="face bottom">
+          <div class="button-lever cyan" id="btn3d-cyan">
+            <div class="lever-base">
+              <div class="lever-base-face lever-base-front"></div>
+              <div class="lever-base-face lever-base-back"></div>
+              <div class="lever-base-face lever-base-right"></div>
+              <div class="lever-base-face lever-base-left"></div>
+              <div class="lever-base-face lever-base-top"></div>
+              <div class="lever-base-face lever-base-bottom"></div>
+            </div>
+            <div class="lever-handle">
+              <div class="lever-handle-face lever-handle-front"></div>
+              <div class="lever-handle-face lever-handle-back"></div>
+              <div class="lever-handle-face lever-handle-right"></div>
+              <div class="lever-handle-face lever-handle-left"></div>
+              <div class="lever-handle-face lever-handle-top"></div>
+              <div class="lever-handle-face lever-handle-bottom"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const cube = document.getElementById("cube");
+      const btn3dGreen = document.getElementById("btn3d-green");
+      const btn3dYellow = document.getElementById("btn3d-yellow");
+      const btn3dPurple = document.getElementById("btn3d-purple");
+      const btn3dOrange = document.getElementById("btn3d-orange");
+      const btn3dCyan = document.getElementById("btn3d-cyan");
+      const btn3dCrank = document.getElementById("btn3d-crank");
+      const crankArm = document.getElementById("crank-arm");
+      const crankBaseBody = document.getElementById("crank-base-body");
+      const crankKnobBody = document.getElementById("crank-knob-body");
+      const cylinderBody = document.getElementById("cylinder-body");
+      const cylinderBodyPurple = document.getElementById(
+        "cylinder-body-purple"
+      );
+
+      let isDragging = false;
+      let isCrankDragging = false;
+      let startX,
+        startY,
+        rotateX = -20,
+        rotateY = 30;
+      let crankAngle = 0;
+      let crankStartAngle = 0;
+      let crankStartMouseAngle = 0;
+
+      // Função para gerar painéis do cilindro (técnica 3 - gradiente vertical)
+      function createCylinderPanels(container, panels = 48, radius = 20) {
+        for (let i = 0; i < panels; i++) {
+          const panel = document.createElement("div");
+          panel.className = "cylinder-panel";
+          const angle = (i / panels) * 360;
+          panel.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+          container.appendChild(panel);
+        }
+      }
+
+      // Gerar painéis dos cilindros
+      createCylinderPanels(cylinderBody);
+      createCylinderPanels(cylinderBodyPurple);
+
+      // Gerar painéis da base da manivela
+      for (let i = 0; i < 48; i++) {
+        const panel = document.createElement("div");
+        panel.className = "crank-base-panel";
+        const angle = (i / 48) * 360;
+        panel.style.transform = `rotateY(${angle}deg) translateZ(15px)`;
+        crankBaseBody.appendChild(panel);
+      }
+
+      // Gerar painéis do knob da manivela
+      for (let i = 0; i < 32; i++) {
+        const panel = document.createElement("div");
+        panel.className = "crank-knob-panel";
+        const angle = (i / 32) * 360;
+        panel.style.transform = `rotateY(${angle}deg) translateZ(6px)`;
+        crankKnobBody.appendChild(panel);
+      }
+
+      const updateCube = () =>
+        (cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`);
+      updateCube();
+
+      const updateCrank = () => {
+        crankArm.style.transform = `translateZ(10px) rotateZ(${crankAngle}deg)`;
+      };
+
+      // Snap para ângulo reto mais próximo
+      const snapToRightAngle = (angle) => {
+        return Math.round(angle / 90) * 90;
+      };
+
+      // Calcular ângulo do mouse relativo ao centro da manivela
+      const getMouseAngle = (e, element) => {
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        return (
+          Math.atan2(e.clientY - centerY, e.clientX - centerX) * (180 / Math.PI)
+        );
+      };
+
+      document.addEventListener("mousedown", (e) => {
+        // Manivela
+        if (
+          e.target.closest(".crank-knob") ||
+          e.target.closest(".crank-handle-bar")
+        ) {
+          isCrankDragging = true;
+          crankStartAngle = crankAngle;
+          crankStartMouseAngle = getMouseAngle(e, btn3dCrank);
+          e.preventDefault();
+          return;
+        }
+
+        if (
+          e.target.closest(".button-3d") ||
+          e.target.closest(".button-cylinder")
+        ) {
+          const btn =
+            e.target.closest(".button-3d") ||
+            e.target.closest(".button-cylinder");
+          btn.classList.add("pressed");
+          return;
+        }
+        if (e.target.closest(".button-lever")) {
+          return;
+        }
+        if (e.target.closest(".button-crank")) {
+          return;
+        }
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (isCrankDragging) {
+          const currentMouseAngle = getMouseAngle(e, btn3dCrank);
+          const deltaAngle = currentMouseAngle - crankStartMouseAngle;
+          crankAngle = crankStartAngle + deltaAngle;
+          updateCrank();
+          return;
+        }
+
+        if (!isDragging) return;
+        rotateY += (e.clientX - startX) * 0.5;
+        rotateX -= (e.clientY - startY) * 0.5;
+        updateCube();
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+
+      document.addEventListener("mouseup", () => {
+        if (isCrankDragging) {
+          console.log(`Manivela: ${((crankAngle % 360) + 360) % 360}°`);
+          isCrankDragging = false;
+          return;
+        }
+
+        isDragging = false;
+        document
+          .querySelectorAll(".button-3d, .button-cylinder")
+          .forEach((btn) => {
+            btn.classList.remove("pressed");
+          });
+      });
+
+      btn3dGreen.addEventListener("click", () =>
+        console.log("Botão verde clicado!")
+      );
+      btn3dPurple.addEventListener("click", () =>
+        console.log("Botão roxo clicado!")
+      );
+      btn3dOrange.addEventListener("click", () =>
+        console.log("Botão laranja clicado!")
+      );
+
+      btn3dYellow.addEventListener("click", () => {
+        btn3dYellow.classList.toggle("on");
+        const state = btn3dYellow.classList.contains("on") ? "ON" : "OFF";
+        console.log(`Alavanca amarela: ${state}`);
+      });
+
+      btn3dCyan.addEventListener("click", () => {
+        btn3dCyan.classList.toggle("on");
+        const state = btn3dCyan.classList.contains("on") ? "ON" : "OFF";
+        console.log(`Alavanca ciano: ${state}`);
+      });
+    </script>
+  </body>
+</html>

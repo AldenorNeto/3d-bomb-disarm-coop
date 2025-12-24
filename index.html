@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cubo 3D - Jogo de Sequência</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Indicador de sequência -->
+    <div class="sequence-indicator">
+      <div class="sequence-dot"></div>
+      <div class="sequence-dot"></div>
+      <div class="sequence-dot"></div>
+    </div>
+
+    <!-- Cubo 3D -->
+    <div class="scene">
+      <div class="cube">
+        <div class="face front">
+          <div class="subface" data-subface="front-1"></div>
+          <div class="subface" data-subface="front-2"></div>
+          <div class="subface" data-subface="front-3"></div>
+          <div class="subface" data-subface="front-4"></div>
+        </div>
+        <div class="face back">
+          <div class="subface" data-subface="back-1"></div>
+          <div class="subface" data-subface="back-2"></div>
+          <div class="subface" data-subface="back-3"></div>
+          <div class="subface" data-subface="back-4"></div>
+        </div>
+        <div class="face right"></div>
+        <div class="face left"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+      </div>
+    </div>
+
+    <!-- Overlay de mensagens -->
+    <div class="overlay">
+      <div class="message"></div>
+      <button class="retry-btn">Tentar Novamente</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

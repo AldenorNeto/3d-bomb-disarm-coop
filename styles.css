@@ -1,0 +1,1366 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== 3D STYLING VARIABLES ========== */
+:root {
+  /* 3D Depth values */
+  --depth-sm: 4px;
+  --depth-md: 8px;
+  --depth-lg: 12px;
+  --press-depth: 2px;
+
+  /* 3D Colors */
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-dark: rgba(0, 0, 0, 0.6);
+  --highlight-color: rgba(255, 255, 255, 0.3);
+  --highlight-bright: rgba(255, 255, 255, 0.5);
+
+  /* Animation timing */
+  --transition-fast: 0.1s;
+  --transition-normal: 0.15s;
+  --transition-slow: 0.25s;
+
+  /* ========== TRUE 3D DEVICE VARIABLES ========== */
+  /* Game Button (cylinder) */
+  --btn-size: 50px;
+  --btn-half: 25px;
+  --btn-depth: 20px;
+  --btn-press-offset: -15px;
+
+  /* Click Counter (cylinder) */
+  --counter-size: 60px;
+  --counter-half: 30px;
+  --counter-depth: 20px;
+
+  /* Switch Knob (cube) */
+  --switch-knob-size: 24px;
+  --switch-knob-half: 12px;
+  --switch-knob-depth: 10px;
+
+  /* Keypad Key (cube) */
+  --key-size: 24px;
+  --key-half: 12px;
+  --key-depth: 8px;
+  --key-press-offset: -6px;
+
+  /* Crank */
+  --crank-base-size: 50px;
+  --crank-base-half: 25px;
+  --crank-base-depth: 15px;
+  --crank-knob-size: 12px;
+  --crank-knob-half: 6px;
+  --crank-knob-depth: 10px;
+
+  /* Cylinder segments */
+  --cyl-segments: 32;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1a1a2e;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.scene {
+  width: 400px;
+  height: 320px;
+  perspective: 1000px;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-20deg) rotateY(-30deg);
+  transition: transform 0.1s ease-out;
+}
+
+.face {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background: #4a4a4a;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backface-visibility: visible;
+  user-select: none;
+  /* Centraliza todas as faces no mesmo ponto */
+  left: 50%;
+  top: 50%;
+  margin-left: -200px; /* metade da largura do front/back */
+  margin-top: -160px; /* metade da altura do front/back */
+}
+
+/* Front e Back - faces principais (400x320) */
+.front,
+.back {
+  width: 400px;
+  height: 320px;
+  margin-left: -200px;
+  margin-top: -160px;
+  padding: 0;
+  gap: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+/* Subfaces - cada uma é uma área independente para dispositivos */
+.subface {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #4a4a4a;
+  transition: background-color 0.3s ease;
+}
+
+/* Subface solved state - green background */
+.subface.solved {
+  background-color: rgba(46, 204, 113, 0.6);
+}
+
+/* Subface failed state - red background */
+.subface.failed {
+  background-color: rgba(231, 76, 60, 0.6);
+}
+
+/* Disable interactions on resolved subfaces */
+.subface.solved .game-btn,
+.subface.failed .game-btn {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.subface.solved .crank,
+.subface.failed .crank {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Right e Left - faces laterais estreitas (80x320) */
+.right,
+.left {
+  width: 80px;
+  height: 320px;
+  margin-left: -40px;
+  margin-top: -160px;
+}
+
+/* Top e Bottom - faces finas (400x80) */
+.top,
+.bottom {
+  width: 400px;
+  height: 80px;
+  margin-left: -200px;
+  margin-top: -40px;
+}
+
+/* 
+  Dimensões: 400 (largura) x 320 (altura) x 80 (profundidade)
+  Front/Back translateZ = profundidade/2 = 40px
+  Right/Left translateZ = largura/2 = 200px
+  Top/Bottom translateZ = altura/2 = 160px
+*/
+.front {
+  transform: translateZ(40px);
+}
+.back {
+  transform: rotateY(180deg) translateZ(40px);
+}
+.right {
+  transform: rotateY(90deg) translateZ(200px);
+}
+.left {
+  transform: rotateY(-90deg) translateZ(200px);
+}
+.top {
+  transform: rotateX(90deg) translateZ(160px);
+}
+.bottom {
+  transform: rotateX(-90deg) translateZ(160px);
+}
+
+/* Game buttons - simple 2D style */
+.game-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s;
+}
+
+.game-btn:hover {
+  transform: scale(1.05);
+}
+
+.game-btn:active {
+  transform: scale(0.95);
+}
+
+/* Disable on resolved subfaces */
+.subface.solved .game-btn,
+.subface.failed .game-btn {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Cranks - TRUE 3D projecting outward */
+.crank-3d {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: grab;
+}
+
+.crank-3d:active,
+.crank-3d.dragging {
+  cursor: grabbing;
+}
+
+/* Crank base attached to face */
+.crank-base {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  transform: translateZ(0);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Crank shaft - projects outward */
+.crank-shaft {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  left: 5px;
+  top: 5px;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  transform: translateZ(15px);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--crank-color) 100%, white 20%) 0%,
+    var(--crank-color) 50%,
+    color-mix(in srgb, var(--crank-color) 100%, black 30%) 100%
+  );
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Crank handle - position indicator */
+.crank-3d .crank-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(145deg, #fff, #ccc);
+  border-radius: 50%;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(8px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Crank center hub */
+.crank-3d .crank-center {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateZ(20px);
+  background: linear-gradient(145deg, #888, #444);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Turn counter display */
+.crank-3d .crank-turns {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(10px);
+  font-size: 14px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.subface.solved .crank-3d,
+.subface.failed .crank-3d {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Message overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.overlay.show {
+  display: flex;
+}
+
+.message {
+  font-size: 32px;
+  color: white;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.message.victory {
+  color: #2ecc71;
+}
+
+.message.failure {
+  color: #e74c3c;
+}
+
+.retry-btn {
+  padding: 15px 40px;
+  font-size: 20px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry-btn:hover {
+  background: #2980b9;
+}
+
+/* Sequence indicator */
+.sequence-indicator {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 50;
+}
+
+.sequence-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #333;
+  border: 2px solid #666;
+}
+
+.sequence-dot.filled {
+  background: #2ecc71;
+  border-color: #27ae60;
+}
+
+/* Responsive scaling for smaller screens */
+@media (max-width: 480px) {
+  .scene {
+    width: 300px;
+    height: 240px;
+  }
+
+  .front,
+  .back {
+    width: 300px;
+    height: 240px;
+    margin-left: -150px;
+    margin-top: -120px;
+  }
+
+  .right,
+  .left {
+    width: 60px;
+    height: 240px;
+    margin-left: -30px;
+    margin-top: -120px;
+  }
+
+  .top,
+  .bottom {
+    width: 300px;
+    height: 60px;
+    margin-left: -150px;
+    margin-top: -30px;
+  }
+
+  .front {
+    transform: translateZ(30px);
+  }
+  .back {
+    transform: rotateY(180deg) translateZ(30px);
+  }
+  .right {
+    transform: rotateY(90deg) translateZ(150px);
+  }
+  .left {
+    transform: rotateY(-90deg) translateZ(150px);
+  }
+  .top {
+    transform: rotateX(90deg) translateZ(120px);
+  }
+  .bottom {
+    transform: rotateX(-90deg) translateZ(120px);
+  }
+
+  .game-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .crank {
+    width: 55px;
+    height: 55px;
+  }
+
+  .message {
+    font-size: 24px;
+  }
+}
+
+/* ========== SWITCH DEVICE - 3D ========== */
+.switch {
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  /* Recessed track effect */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateZ(var(--press-depth));
+}
+
+.switch-track {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border-radius: 12px;
+  background: var(--switch-off-color, #95a5a6);
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.switch.on .switch-track {
+  background: var(--switch-on-color, #2ecc71);
+}
+
+.switch-knob {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transform-style: preserve-3d;
+  transform: translateZ(var(--depth-sm));
+  transition: transform 0.3s ease, left 0.3s ease;
+  /* 3D knob with depth */
+  background: linear-gradient(145deg, #ffffff 0%, #e0e0e0 50%, #cccccc 100%);
+  box-shadow: 0 var(--depth-sm) 0 #999,
+    0 calc(var(--depth-sm) + 2px) 6px rgba(0, 0, 0, 0.4);
+}
+
+.switch.on .switch-knob {
+  left: 32px;
+}
+
+/* Disable switch on resolved subfaces */
+.subface.solved .switch,
+.subface.failed .switch {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ========== CLICK COUNTER DEVICE - 3D ========== */
+.click-counter {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(var(--depth-md));
+  transition: transform var(--transition-normal) ease-out;
+  /* 3D top face */
+  background: linear-gradient(
+    145deg,
+    var(--highlight-color) 0%,
+    transparent 50%,
+    var(--shadow-color) 100%
+  );
+  box-shadow: 0 var(--depth-md) 0 var(--shadow-dark),
+    0 calc(var(--depth-md) + 4px) 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Counter side depth */
+.click-counter::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) translateZ(calc(var(--depth-md) * -1));
+  background: inherit;
+  filter: brightness(0.6);
+}
+
+/* Counter rim */
+.click-counter::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 50%;
+  border: 2px solid var(--highlight-color);
+  pointer-events: none;
+}
+
+.click-counter:hover {
+  transform: translateZ(calc(var(--depth-md) + 2px));
+  box-shadow: 0 calc(var(--depth-md) + 2px) 0 var(--shadow-dark),
+    0 calc(var(--depth-md) + 6px) 12px rgba(0, 0, 0, 0.5);
+}
+
+.click-counter:active,
+.click-counter.clicked {
+  transform: translateZ(var(--press-depth));
+  box-shadow: 0 var(--press-depth) 0 var(--shadow-dark),
+    0 calc(var(--press-depth) + 2px) 4px rgba(0, 0, 0, 0.3);
+  transition: transform var(--transition-fast) ease-out;
+}
+
+.counter-display {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* Disable click counter on resolved subfaces */
+.subface.solved .click-counter,
+.subface.failed .click-counter {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ========== KEYPAD DEVICE - 3D ========== */
+.keypad {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  background: var(--keypad-color, #34495e);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.keypad-display {
+  width: 100%;
+  height: 24px;
+  background: #1a1a2e;
+  border-radius: 4px;
+  color: #2ecc71;
+  font-family: monospace;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.keypad-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.keypad-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s;
+}
+
+.keypad-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.keypad-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.keypad-clear {
+  background: rgba(231, 76, 60, 0.6);
+}
+
+.keypad-clear:hover {
+  background: rgba(231, 76, 60, 0.8);
+}
+
+.keypad-btn-placeholder {
+  width: 28px;
+  height: 28px;
+}
+
+/* Disable keypad on resolved subfaces */
+.subface.solved .keypad,
+.subface.failed .keypad {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Responsive scaling for new devices */
+@media (max-width: 480px) {
+  .switch {
+    width: 50px;
+    height: 25px;
+    border-radius: 12px;
+  }
+
+  .switch-knob {
+    width: 21px;
+    height: 21px;
+  }
+
+  .switch.on .switch-knob {
+    transform: translateX(25px);
+  }
+
+  .click-counter {
+    width: 55px;
+    height: 55px;
+  }
+
+  .counter-display {
+    font-size: 14px;
+  }
+
+  .keypad {
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .keypad-display {
+    height: 20px;
+    font-size: 14px;
+  }
+
+  .keypad-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+
+  .keypad-btn-placeholder {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ========== TRUE 3D PRIMITIVES ========== */
+
+/* ========== 3D CYLINDER PRIMITIVE ========== */
+.button-cylinder {
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform var(--transition-normal) ease;
+}
+
+.button-cylinder.pressed {
+  transform: translateZ(var(--btn-press-offset));
+}
+
+.cylinder-top {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform: translateZ(var(--btn-half));
+  background: radial-gradient(
+    circle at 35% 35%,
+    var(--cyl-color-light, #5dade2),
+    var(--cyl-color, #3498db) 50%,
+    var(--cyl-color-dark, #2980b9)
+  );
+}
+
+.cylinder-bottom {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform: translateZ(calc(var(--btn-half) * -1));
+  background: var(--cyl-color-darker, #1a5276);
+}
+
+.cylinder-body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(90deg);
+}
+
+.cylinder-panel {
+  position: absolute;
+  width: 6px;
+  height: var(--btn-size);
+  left: 50%;
+  top: 50%;
+  margin-left: -3px;
+  margin-top: calc(var(--btn-half) * -1);
+  background: linear-gradient(
+    to bottom,
+    var(--cyl-color, #3498db),
+    var(--cyl-color-dark, #2980b9),
+    var(--cyl-color-darker, #1a5276)
+  );
+}
+
+/* ========== 3D CUBE PRIMITIVE ========== */
+.button-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform var(--transition-normal) ease;
+}
+
+.button-3d.pressed {
+  transform: translateZ(var(--btn-press-offset));
+}
+
+.btn-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.btn-front {
+  transform: translateZ(var(--btn-half));
+  background: var(--btn-color, #3498db);
+}
+
+.btn-back {
+  transform: rotateY(180deg) translateZ(var(--btn-half));
+  background: var(--btn-color-darker, #1a5276);
+}
+
+.btn-right {
+  transform: rotateY(90deg) translateZ(var(--btn-half));
+  background: var(--btn-color-dark, #2980b9);
+}
+
+.btn-left {
+  transform: rotateY(-90deg) translateZ(var(--btn-half));
+  background: var(--btn-color-dark, #2471a3);
+}
+
+.btn-top {
+  transform: rotateX(90deg) translateZ(var(--btn-half));
+  background: var(--btn-color-light, #5dade2);
+}
+
+.btn-bottom {
+  transform: rotateX(-90deg) translateZ(var(--btn-half));
+  background: var(--btn-color-darker, #1a5276);
+}
+
+/* ========== 3D PRESS ANIMATION CLASSES ========== */
+/* Generic pressed state for any 3D element */
+.pressed-3d {
+  transform: translateZ(var(--btn-press-offset)) !important;
+  transition: transform var(--transition-fast) ease !important;
+}
+
+/* Clicked animation for counters */
+.clicked-3d {
+  transform: translateZ(var(--btn-press-offset));
+  transition: transform var(--transition-fast) ease;
+}
+
+/* Keypad key specific press */
+.keypad-key-3d.pressed {
+  transform: translateZ(var(--key-press-offset));
+}
+
+/* Ensure subfaces support 3D children */
+.subface {
+  transform-style: preserve-3d;
+}
+
+/* Disable 3D devices on resolved subfaces */
+.subface.solved .button-cylinder,
+.subface.solved .button-3d,
+.subface.solved .click-counter-3d,
+.subface.solved .switch-3d,
+.subface.solved .keypad-3d,
+.subface.failed .button-cylinder,
+.subface.failed .button-3d,
+.subface.failed .click-counter-3d,
+.subface.failed .switch-3d,
+.subface.failed .keypad-3d {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ========== 3D GAME BUTTON (CYLINDER) ========== */
+.game-btn-3d {
+  width: var(--btn-size);
+  height: var(--btn-size);
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform var(--transition-normal) ease;
+}
+
+.game-btn-3d.pressed {
+  transform: translateZ(var(--btn-press-offset));
+}
+
+.game-btn-3d .cylinder-top {
+  position: absolute;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  border-radius: 50%;
+  transform: translateZ(19px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
+.game-btn-3d .cylinder-bottom {
+  position: absolute;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  border-radius: 50%;
+  transform: translateZ(-19px);
+}
+
+.game-btn-3d .cylinder-body {
+  position: absolute;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  transform-style: preserve-3d;
+  transform: rotateX(90deg);
+}
+
+.game-btn-3d .cylinder-panel {
+  position: absolute;
+  width: 6px;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  margin-left: -3px;
+  margin-top: -20px;
+}
+
+/* ========== 3D SWITCH ========== */
+.switch-3d {
+  width: 60px;
+  height: 30px;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.switch-track-3d {
+  position: absolute;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  transform-style: preserve-3d;
+  background: var(--switch-off-color, #95a5a6);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+.switch-3d.on .switch-track-3d {
+  background: var(--switch-on-color, #2ecc71);
+}
+
+.switch-knob-3d {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 3px;
+  left: 3px;
+  transform-style: preserve-3d;
+  transition: left 0.3s ease;
+}
+
+.switch-3d.on .switch-knob-3d {
+  left: 33px;
+}
+
+.switch-knob-3d .btn-face {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+}
+
+.switch-knob-3d .btn-front {
+  transform: translateZ(12px);
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.switch-knob-3d .btn-back {
+  transform: rotateY(180deg) translateZ(12px);
+  background: #999999;
+  border-radius: 50%;
+}
+
+.switch-knob-3d .btn-right {
+  width: 24px;
+  height: 24px;
+  transform: rotateY(90deg) translateZ(12px);
+  background: #e0e0e0;
+  border-radius: 0;
+}
+
+.switch-knob-3d .btn-left {
+  width: 24px;
+  height: 24px;
+  transform: rotateY(-90deg) translateZ(12px);
+  background: #cccccc;
+  border-radius: 0;
+}
+
+.switch-knob-3d .btn-top {
+  width: 24px;
+  height: 24px;
+  transform: rotateX(90deg) translateZ(12px);
+  background: #f5f5f5;
+  border-radius: 0;
+}
+
+.switch-knob-3d .btn-bottom {
+  width: 24px;
+  height: 24px;
+  transform: rotateX(-90deg) translateZ(12px);
+  background: #999999;
+  border-radius: 0;
+}
+
+/* ========== 3D CLICK COUNTER (CYLINDER) ========== */
+.click-counter-3d {
+  width: var(--counter-size);
+  height: var(--counter-size);
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform var(--transition-normal) ease;
+}
+
+.click-counter-3d.pressed {
+  transform: translateZ(var(--btn-press-offset));
+}
+
+.click-counter-3d .cylinder-top {
+  position: absolute;
+  width: var(--counter-size);
+  height: var(--counter-size);
+  border-radius: 50%;
+  transform: translateZ(19px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.click-counter-3d .cylinder-bottom {
+  position: absolute;
+  width: var(--counter-size);
+  height: var(--counter-size);
+  border-radius: 50%;
+  transform: translateZ(-19px);
+}
+
+.click-counter-3d .cylinder-body {
+  position: absolute;
+  width: var(--counter-size);
+  height: var(--counter-size);
+  transform-style: preserve-3d;
+  transform: rotateX(90deg);
+}
+
+.click-counter-3d .cylinder-panel {
+  position: absolute;
+  width: 6px;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  margin-left: -3px;
+  margin-top: -20px;
+}
+
+.click-counter-3d .counter-display {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== 3D KEYPAD ========== */
+.keypad-3d {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  background: var(--keypad-color, #34495e);
+  border-radius: 8px;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.keypad-display-3d {
+  width: 100%;
+  height: 24px;
+  background: #1a1a2e;
+  border-radius: 4px;
+  color: #2ecc71;
+  font-family: monospace;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.keypad-buttons-3d {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  transform-style: preserve-3d;
+}
+
+.keypad-key-3d {
+  width: var(--key-size);
+  height: var(--key-size);
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform var(--transition-fast) ease;
+}
+
+.keypad-key-3d.pressed {
+  transform: translateZ(var(--key-press-offset));
+}
+
+.keypad-key-3d .btn-face {
+  position: absolute;
+  width: var(--key-size);
+  height: var(--key-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.keypad-key-3d .btn-front {
+  transform: translateZ(var(--key-half));
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.keypad-key-3d .btn-back {
+  transform: rotateY(180deg) translateZ(var(--key-half));
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.keypad-key-3d .btn-right {
+  width: var(--key-depth);
+  transform: rotateY(90deg) translateZ(calc(var(--key-size) - var(--key-half)));
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.keypad-key-3d .btn-left {
+  width: var(--key-depth);
+  transform: rotateY(-90deg) translateZ(var(--key-half));
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.keypad-key-3d .btn-top {
+  height: var(--key-depth);
+  transform: rotateX(90deg) translateZ(var(--key-half));
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.keypad-key-3d .btn-bottom {
+  height: var(--key-depth);
+  transform: rotateX(-90deg) translateZ(calc(var(--key-size) - var(--key-half)));
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.keypad-key-3d.clear .btn-front {
+  background: rgba(231, 76, 60, 0.6);
+}
+
+.keypad-key-3d.clear .btn-top {
+  background: rgba(231, 76, 60, 0.7);
+}
+
+.keypad-btn-placeholder-3d {
+  width: var(--key-size);
+  height: var(--key-size);
+}
+
+/* ========== 3D CRANK (TRUE 3D WITH CYLINDER PANELS) ========== */
+.crank-3d-full {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: grab;
+}
+
+.crank-3d-full:active,
+.crank-3d-full.dragging {
+  cursor: grabbing;
+}
+
+/* Crank base cylinder */
+.crank-3d-full .crank-base-3d {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 10px;
+  top: 10px;
+  transform-style: preserve-3d;
+}
+
+.crank-3d-full .crank-base-top {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transform: translateZ(7px);
+}
+
+.crank-3d-full .crank-base-bottom {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transform: translateZ(-7px);
+}
+
+.crank-3d-full .crank-base-body {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  transform-style: preserve-3d;
+  transform: rotateX(90deg);
+}
+
+.crank-3d-full .crank-base-panel {
+  position: absolute;
+  width: 5px;
+  height: 15px;
+  left: 50%;
+  top: 50%;
+  margin-left: -2.5px;
+  margin-top: -7.5px;
+}
+
+/* Crank arm */
+.crank-3d-full .crank-arm-3d {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  transform-style: preserve-3d;
+  transform: translateZ(10px);
+  transition: none;
+}
+
+/* Crank shaft (center) */
+.crank-3d-full .crank-shaft-3d {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 29px;
+  top: 29px;
+  border-radius: 50%;
+  transform: translateZ(5px);
+}
+
+/* Crank handle bar (3D cube) */
+.crank-3d-full .crank-bar-3d {
+  position: absolute;
+  width: 30px;
+  height: 8px;
+  left: 35px;
+  top: 31px;
+  transform-style: preserve-3d;
+}
+
+.crank-3d-full .crank-bar-face {
+  position: absolute;
+}
+
+.crank-3d-full .crank-bar-front {
+  width: 30px;
+  height: 8px;
+  transform: translateZ(4px);
+}
+
+.crank-3d-full .crank-bar-back {
+  width: 30px;
+  height: 8px;
+  transform: translateZ(-4px);
+}
+
+.crank-3d-full .crank-bar-top {
+  width: 30px;
+  height: 8px;
+  transform: rotateX(90deg) translateZ(-4px);
+}
+
+.crank-3d-full .crank-bar-bottom {
+  width: 30px;
+  height: 8px;
+  transform: rotateX(-90deg) translateZ(-4px);
+}
+
+.crank-3d-full .crank-bar-right {
+  width: 8px;
+  height: 8px;
+  transform: rotateY(90deg) translateZ(26px);
+}
+
+.crank-3d-full .crank-bar-left {
+  width: 8px;
+  height: 8px;
+  transform: rotateY(-90deg) translateZ(4px);
+}
+
+/* Crank knob cylinder */
+.crank-3d-full .crank-knob-3d {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 58px;
+  top: 28px;
+  transform-style: preserve-3d;
+}
+
+.crank-3d-full .crank-knob-top {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translateZ(6px);
+}
+
+.crank-3d-full .crank-knob-bottom {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translateZ(-6px);
+}
+
+.crank-3d-full .crank-knob-body {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  transform-style: preserve-3d;
+  transform: rotateX(90deg);
+}
+
+.crank-3d-full .crank-knob-panel {
+  position: absolute;
+  width: 4px;
+  height: 12px;
+  left: 50%;
+  top: 50%;
+  margin-left: -2px;
+  margin-top: -6px;
+}
+
+/* Turn counter */
+.crank-3d-full .crank-turns {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(10px);
+  font-size: 12px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
