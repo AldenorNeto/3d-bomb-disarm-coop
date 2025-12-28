@@ -57,132 +57,6 @@ function createCylinderPanels(
 // ========== TEMPLATES CATALOG ==========
 
 const templatesCatalog = [
-  // Template 1: Single button (simple)
-  {
-    id: "template-single-button",
-    devices: [{ type: "button", id: "btn-red", color: "#e74c3c", label: "🔴" }],
-    solution: ["btn-red"],
-  },
-
-  // Template 2: Two buttons - press yellow
-  {
-    id: "template-two-buttons",
-    devices: [
-      { type: "button", id: "btn-yellow", color: "#f1c40f", label: "🟡" },
-      { type: "button", id: "btn-blue", color: "#3498db", label: "🔵" },
-    ],
-    solution: ["btn-yellow"],
-  },
-
-  // Template 3: Three buttons - press green
-  {
-    id: "template-three-buttons",
-    devices: [
-      { type: "button", id: "btn-green", color: "#2ecc71", label: "🟢" },
-      { type: "button", id: "btn-orange", color: "#e67e22", label: "🟠" },
-      { type: "button", id: "btn-purple", color: "#9b59b6", label: "🟣" },
-    ],
-    solution: ["btn-green"],
-  },
-
-  // Template 4: Crank clockwise (1 turn)
-  {
-    id: "template-crank-cw",
-    devices: [{ type: "crank", id: "crank-1", color: "#9b59b6" }],
-    solution: [{ crankId: "crank-1", direction: "cw", turns: 1 }],
-  },
-
-  // Template 5: Crank counter-clockwise (1 turn)
-  {
-    id: "template-crank-ccw",
-    devices: [{ type: "crank", id: "crank-2", color: "#1abc9c" }],
-    solution: [{ crankId: "crank-2", direction: "ccw", turns: 1 }],
-  },
-
-  // Template 6: Two cranks - turn first cw
-  {
-    id: "template-two-cranks",
-    devices: [
-      { type: "crank", id: "crank-a", color: "#e74c3c" },
-      { type: "crank", id: "crank-b", color: "#3498db" },
-    ],
-    solution: [{ crankId: "crank-a", direction: "cw", turns: 1 }],
-  },
-
-  // Template 7: Button then crank (mixed)
-  {
-    id: "template-button-crank",
-    devices: [
-      { type: "button", id: "btn-cyan", color: "#00bcd4", label: "🔵" },
-      { type: "crank", id: "crank-3", color: "#ff5722" },
-    ],
-    solution: ["btn-cyan", { crankId: "crank-3", direction: "cw", turns: 1 }],
-  },
-
-  // Template 8: Crank then button (mixed)
-  {
-    id: "template-crank-button",
-    devices: [
-      { type: "crank", id: "crank-4", color: "#673ab7" },
-      { type: "button", id: "btn-lime", color: "#cddc39", label: "🟢" },
-    ],
-    solution: [{ crankId: "crank-4", direction: "ccw", turns: 1 }, "btn-lime"],
-  },
-
-  // Template 9: Two buttons sequence
-  {
-    id: "template-button-sequence",
-    devices: [
-      { type: "button", id: "btn-pink", color: "#e91e63", label: "🩷" },
-      { type: "button", id: "btn-teal", color: "#009688", label: "🩵" },
-    ],
-    solution: ["btn-pink", "btn-teal"],
-  },
-
-  // Template 10: Crank 2 turns
-  {
-    id: "template-crank-two-turns",
-    devices: [{ type: "crank", id: "crank-5", color: "#795548" }],
-    solution: [{ crankId: "crank-5", direction: "cw", turns: 2 }],
-  },
-
-  // Template 11: Three devices mixed - button, crank, button
-  {
-    id: "template-mixed-three",
-    devices: [
-      { type: "button", id: "btn-amber", color: "#ffc107", label: "🟡" },
-      { type: "crank", id: "crank-6", color: "#607d8b" },
-      { type: "button", id: "btn-indigo", color: "#3f51b5", label: "🔵" },
-    ],
-    solution: ["btn-amber", { crankId: "crank-6", direction: "cw", turns: 1 }],
-  },
-
-  // Template 12: Complex - two buttons and crank
-  {
-    id: "template-complex",
-    devices: [
-      { type: "button", id: "btn-deep-orange", color: "#ff5722", label: "🟠" },
-      { type: "button", id: "btn-light-green", color: "#8bc34a", label: "🟢" },
-      { type: "crank", id: "crank-7", color: "#00bcd4" },
-    ],
-    solution: [
-      "btn-deep-orange",
-      { crankId: "crank-7", direction: "ccw", turns: 1 },
-    ],
-  },
-
-  // ========== SWITCH TEMPLATES ==========
-
-  // Template 13: Two switches - toggle in order
-  {
-    id: "template-switch-two",
-    devices: [
-      { type: "switch", id: "sw-1", color: "#95a5a6", onColor: "#2ecc71" },
-      { type: "switch", id: "sw-2", color: "#95a5a6", onColor: "#e74c3c" },
-    ],
-    solution: ["sw-1", "sw-2"],
-  },
-
   // Template 13b: Five switches - toggle in specific order
   {
     id: "template-switch-five",
@@ -234,7 +108,7 @@ const templatesCatalog = [
   {
     id: "template-counter-three",
     devices: [
-      { type: "click-counter", id: "counter-1", color: "#e74c3c", target: 3 },
+      { type: "click-counter", id: "counter-1", color: "#376580ff", target: 3 },
     ],
     solution: [{ counterId: "counter-1", clicks: 3 }],
   },
@@ -245,7 +119,6 @@ const templatesCatalog = [
     devices: [
       { type: "click-counter", id: "counter-1", color: "#1abc9c", target: 10 },
     ],
-    solution: [{ counterId: "counter-1", clicks: 10 }],
   },
 
   // ========== KEYPAD TEMPLATES ==========
@@ -274,7 +147,7 @@ const templatesCatalog = [
   // Template 22: Keypad com símbolos rúnicos - 4 símbolos
   {
     id: "template-keypad-runes",
-    devices: [{ type: "keypad-runes", id: "keypad-runes-1", color: "#4a148c" }],
+    devices: [{ type: "keypad-runes", id: "keypad-runes-1", color: "#bdc3c7" }],
     solution: [{ keypadId: "keypad-runes-1", password: "ᚠᚢᚦᚹ" }],
   },
 
@@ -368,7 +241,15 @@ const templatesCatalog = [
 
 // Helper function to get template by id
 function getTemplateById(templateId) {
-  return templatesCatalog.find((t) => t.id === templateId);
+  const template = templatesCatalog.find((t) => t.id === templateId);
+  if (!template) {
+    console.error(`Template not found: ${templateId}`);
+    console.log(
+      "Available templates:",
+      templatesCatalog.map((t) => t.id)
+    );
+  }
+  return template;
 }
 
 // Estado da rotação
@@ -511,10 +392,19 @@ function updateLEDDigit(digitId, number) {
 
 // Inicializa o cronômetro da bomba
 function initializeBombTimer() {
+  console.log("Initializing bomb timer...");
   bombTimer.timerElement = document.querySelector(".led-display");
 
+  if (!bombTimer.timerElement) {
+    console.error("LED display element not found!");
+    return;
+  }
+
+  console.log("Timer element found, updating display...");
   updateTimerDisplay();
+  console.log("Starting timer...");
   startBombTimer();
+  console.log("Bomb timer initialized successfully");
 }
 
 // Atualiza o display do cronômetro
@@ -545,8 +435,10 @@ function updateTimerDisplay() {
 
 // Inicia o cronômetro
 function startBombTimer() {
+  console.log("startBombTimer called, isRunning:", bombTimer.isRunning);
   if (bombTimer.isRunning) return;
 
+  console.log("Starting bomb timer with", bombTimer.totalSeconds, "seconds");
   bombTimer.isRunning = true;
   bombTimer.intervalId = setInterval(() => {
     if (bombTimer.totalSeconds > 0) {
@@ -560,6 +452,7 @@ function startBombTimer() {
       }
     }
   }, 1000);
+  console.log("Bomb timer started with interval ID:", bombTimer.intervalId);
 }
 
 // Para o cronômetro
@@ -687,12 +580,124 @@ function generateGameSeed() {
   gameState.currentSeed = seed;
 
   // Atualiza o display da seed
+  updateSeedDisplay(seed);
+
+  return seed;
+}
+
+// Atualiza o display da seed
+function updateSeedDisplay(seed) {
   const seedElement = document.getElementById("seed-value");
   if (seedElement) {
     seedElement.textContent = seed;
   }
+}
 
-  return seed;
+// Valida se a seed é válida (10 dígitos numéricos)
+function validateSeed(seed) {
+  return /^\d{10}$/.test(seed);
+}
+
+// Aplica uma nova seed e regenera a bomba
+function applySeed(newSeed) {
+  if (!validateSeed(newSeed)) {
+    alert("Seed inválida! Deve conter exatamente 10 dígitos numéricos.");
+    return false;
+  }
+
+  // Para o cronômetro se estiver rodando
+  stopBombTimer();
+
+  // Atualiza a seed atual
+  gameState.currentSeed = newSeed;
+  updateSeedDisplay(newSeed);
+
+  // Reseta o estado do jogo
+  gameState.isGameOver = false;
+  gameState.hasWon = false;
+
+  // Reseta o cronômetro
+  bombTimer.totalSeconds = 240;
+  bombTimer.isRunning = false;
+
+  // Limpa estados das subfaces
+  Object.keys(subfaceStates).forEach((subfaceId) => {
+    subfaceStates[subfaceId].status = "pending";
+    subfaceStates[subfaceId].currentSequence = [];
+    // Limpa outros estados específicos
+    if (subfaceStates[subfaceId].switches) {
+      Object.keys(subfaceStates[subfaceId].switches).forEach((switchId) => {
+        subfaceStates[subfaceId].switches[switchId] = false;
+      });
+    }
+    if (subfaceStates[subfaceId].counters) {
+      Object.keys(subfaceStates[subfaceId].counters).forEach((counterId) => {
+        subfaceStates[subfaceId].counters[counterId].currentValue = 0;
+      });
+    }
+    if (subfaceStates[subfaceId].safeDials) {
+      Object.keys(subfaceStates[subfaceId].safeDials).forEach((dialId) => {
+        subfaceStates[subfaceId].safeDials[dialId].enteredCombination = [];
+        subfaceStates[subfaceId].safeDials[dialId].currentAngle = 0;
+      });
+    }
+    if (subfaceStates[subfaceId].colorSequences) {
+      Object.keys(subfaceStates[subfaceId].colorSequences).forEach((seqId) => {
+        const sequenceState = subfaceStates[subfaceId].colorSequences[seqId];
+        sequenceState.playerSequence = [];
+        sequenceState.timeoutCount = 0;
+        sequenceState.isTimerActive = false;
+        if (sequenceState.timer) {
+          clearTimeout(sequenceState.timer);
+          sequenceState.timer = null;
+        }
+      });
+    }
+    if (subfaceStates[subfaceId].wireCutting) {
+      Object.keys(subfaceStates[subfaceId].wireCutting).forEach((wireId) => {
+        subfaceStates[subfaceId].wireCutting[wireId].wires.forEach((wire) => {
+          wire.cut = false;
+        });
+      });
+    }
+  });
+
+  // Regenera tudo com a nova seed
+  updateTemplatesWithSeed(newSeed);
+  renderAllSubfaces();
+  generateInstructions();
+
+  // Reinicia o cronômetro
+  updateTimerDisplay();
+  startBombTimer();
+
+  // Remove overlay se estiver visível
+  const overlay = document.querySelector(".overlay");
+  overlay.classList.remove("show");
+  document.body.classList.remove("game-over");
+
+  return true;
+}
+
+// Configura a edição da seed
+function setupSeedEditing() {
+  const seedElement = document.getElementById("seed-value");
+  if (!seedElement) return;
+
+  seedElement.style.cursor = "pointer";
+  seedElement.title = "Clique para editar a seed";
+
+  seedElement.addEventListener("click", () => {
+    const currentSeed = gameState.currentSeed || "0000000000";
+    const newSeed = prompt(
+      "Digite a nova seed (10 dígitos numéricos):",
+      currentSeed
+    );
+
+    if (newSeed !== null && newSeed !== currentSeed) {
+      applySeed(newSeed);
+    }
+  });
 }
 
 // Função de hash simples para gerar valores determinísticos baseados na seed
@@ -736,10 +741,63 @@ function generateSafeDialCombination(seed) {
   return combination;
 }
 
-// Gera senha do keypad numérico baseada na seed
-function generateKeypadPassword(seed, length = 3) {
-  const digits = seed.substring(3, 3 + length); // Usa dígitos 4-6 da seed
-  return digits;
+// Gera configuração do keypad numérico baseada na seed
+function generateKeypadPassword(seed, length = 4) {
+  // Gera 10 valores de 0 a 99 baseados na seed
+  const keypadNumbers = [];
+  for (let i = 0; i < 10; i++) {
+    // Usa dois dígitos da seed para cada número (0-99)
+    const digit1 = parseInt(seed[i % seed.length]);
+    const digit2 = parseInt(seed[(i + 1) % seed.length]);
+    const number = (digit1 * 10 + digit2) % 100;
+    keypadNumbers.push(number);
+  }
+
+  // Remove duplicatas mantendo a ordem
+  const uniqueNumbers = [];
+  keypadNumbers.forEach((num) => {
+    if (!uniqueNumbers.includes(num)) {
+      uniqueNumbers.push(num);
+    }
+  });
+
+  // Se não temos 10 únicos, completa com números sequenciais
+  while (uniqueNumbers.length < 10) {
+    let nextNum = 0;
+    while (uniqueNumbers.includes(nextNum)) {
+      nextNum++;
+    }
+    uniqueNumbers.push(nextNum);
+  }
+
+  // Pega apenas os primeiros 10
+  const finalNumbers = uniqueNumbers.slice(0, 10);
+
+  // Escolhe 4 números para a solução baseado na seed
+  const solutionIndices = [];
+  for (let i = 0; i < length; i++) {
+    const seedIndex = (parseInt(seed[i]) + i * 3) % finalNumbers.length;
+    let attempts = 0;
+    let chosenIndex = seedIndex;
+
+    // Evita duplicatas na solução
+    while (
+      solutionIndices.includes(chosenIndex) &&
+      attempts < finalNumbers.length
+    ) {
+      chosenIndex = (chosenIndex + 1) % finalNumbers.length;
+      attempts++;
+    }
+    solutionIndices.push(chosenIndex);
+  }
+
+  const solution = solutionIndices.map((index) => finalNumbers[index]);
+
+  return {
+    keypadNumbers: finalNumbers,
+    password: solution, // Retorna array ao invés de string
+    passwordString: solution.map((n) => String(n).padStart(2, "0")).join(""), // String para comparação
+  };
 }
 
 // Gera senha do keypad rúnico baseada na seed
@@ -767,14 +825,49 @@ function generateKeypadRunesPassword(seed) {
 // Gera sequência de cores baseada na seed
 function generateColorSequence(seed) {
   const colors = ["red", "blue", "green", "yellow"];
-  const indices = [
-    parseInt(seed[4]) % colors.length,
-    parseInt(seed[5]) % colors.length,
-    parseInt(seed[6]) % colors.length,
-    parseInt(seed[7]) % colors.length,
+
+  // Gera sequência de 5 a 7 cores baseada na seed
+  const length = 5 + (parseInt(seed[0]) % 3); // 5, 6 ou 7 cores
+  const sequence = [];
+
+  for (let i = 0; i < length; i++) {
+    const colorIndex = parseInt(seed[i % seed.length]) % colors.length;
+    sequence.push(colors[colorIndex]);
+  }
+
+  return sequence;
+}
+
+// Gera cores dos dispositivos baseadas na seed
+function generateDeviceColors(seed, deviceIndex = 0) {
+  const colors = [
+    "#e74c3c",
+    "#3498db",
+    "#2ecc71",
+    "#f1c40f",
+    "#9b59b6",
+    "#e67e22",
+    "#1abc9c",
+    "#34495e",
+    "#95a5a6",
+    "#f39c12",
+    "#8e44ad",
+    "#2980b9",
+    "#27ae60",
+    "#d35400",
+    "#c0392b",
   ];
 
-  return indices.map((i) => colors[i]);
+  const colorIndex =
+    (parseInt(seed[deviceIndex % seed.length]) + deviceIndex) % colors.length;
+  return colors[colorIndex];
+}
+
+// Gera valor do contador baseado na seed
+function generateCounterTarget(seed) {
+  // Usa o primeiro dígito da seed para gerar um valor entre 3 e 8
+  const target = 3 + (parseInt(seed[0]) % 6); // 3, 4, 5, 6, 7 ou 8
+  return target;
 }
 
 // Gera combinação de fios baseada na seed
@@ -793,10 +886,17 @@ function generateWireCombination(seed, templateId) {
 
   // Usa diferentes partes da seed para diferentes templates
   const offset = templateId === "template-wire-cutting-2" ? 2 : 0;
+
+  // Garante que os índices não ultrapassem o tamanho da seed (10 dígitos)
+  const seedIndex1 = (8 + offset) % seed.length;
+  const seedIndex2 = (9 + offset) % seed.length;
+  const seedIndex3 = (7 + offset) % seed.length;
+  const seedIndex4 = (6 + offset) % seed.length;
+
   const index1 =
-    (parseInt(seed[8 + offset]) + parseInt(seed[9 + offset])) % allWires.length;
+    (parseInt(seed[seedIndex1]) + parseInt(seed[seedIndex2])) % allWires.length;
   let index2 =
-    (parseInt(seed[7 + offset]) + parseInt(seed[6 + offset])) % allWires.length;
+    (parseInt(seed[seedIndex3]) + parseInt(seed[seedIndex4])) % allWires.length;
 
   // Evita duplicatas
   let attempts = 0;
@@ -820,8 +920,9 @@ function generateWireCombination(seed, templateId) {
     let randomIndex;
     let attempts = 0;
     do {
+      const seedIdx = (i + offset) % seed.length;
       randomIndex =
-        (parseInt(seed[i + offset]) + i * 3 + attempts) % allWires.length;
+        (parseInt(seed[seedIdx]) + i * 3 + attempts) % allWires.length;
       attempts++;
     } while (usedIndices.includes(randomIndex) && attempts < allWires.length);
 
@@ -831,13 +932,16 @@ function generateWireCombination(seed, templateId) {
 
   // Embaralha a ordem dos fios
   for (let i = wires.length - 1; i > 0; i--) {
-    const j = (parseInt(seed[i + offset]) + i) % (i + 1);
+    const seedIdx = (i + offset) % seed.length;
+    const j = (parseInt(seed[seedIdx]) + i) % (i + 1);
     [wires[i], wires[j]] = [wires[j], wires[i]];
   }
 
   return {
     wires: wires,
-    correctWires: correctWires.map((w) => w.join("-")),
+    correctWires: correctWires
+      .filter((w) => w && w.length > 0)
+      .map((w) => w.join("-")),
   };
 }
 
@@ -860,6 +964,14 @@ function generateSwitchCombination(seed) {
   return indices.sort().map((i) => switches[i]);
 }
 
+// Atualiza cores de todos os dispositivos baseadas na seed
+function updateDeviceColors(seed) {
+  // Apenas os fios precisam de cores baseadas na seed
+  // Teclados e cofres mantêm cores básicas
+  // As cores dos fios já são geradas dinamicamente na função generateWireCombination
+  // Não precisamos fazer nada aqui, pois os fios já usam a seed
+}
+
 // Atualiza todos os templates com valores baseados na seed
 function updateTemplatesWithSeed(seed) {
   if (!seed) return;
@@ -875,8 +987,10 @@ function updateTemplatesWithSeed(seed) {
   // Atualiza keypad numérico
   const keypadTemplate = getTemplateById("template-keypad-three");
   if (keypadTemplate) {
-    const password = generateKeypadPassword(seed, 3);
-    keypadTemplate.solution[0].password = password;
+    const keypadData = generateKeypadPassword(seed, 4);
+    keypadTemplate.devices[0].keypadNumbers = keypadData.keypadNumbers;
+    keypadTemplate.devices[0].passwordArray = keypadData.password; // Array para instruções
+    keypadTemplate.solution[0].password = keypadData.passwordString; // String para verificação
   }
 
   // Atualiza keypad rúnico
@@ -890,8 +1004,8 @@ function updateTemplatesWithSeed(seed) {
   const colorTemplate = getTemplateById("template-color-sequence");
   if (colorTemplate) {
     const sequence = generateColorSequence(seed);
-    colorTemplate.devices[0].sequence = [...sequence, sequence[0]]; // 5 cores (repete primeira)
-    colorTemplate.solution[0].sequence = sequence; // 4 cores para solução
+    colorTemplate.devices[0].sequence = sequence; // Sequência completa para mostrar
+    colorTemplate.solution[0].sequence = sequence; // Mesma sequência para solução
   }
 
   // Atualiza wire cutting 1
@@ -920,6 +1034,17 @@ function updateTemplatesWithSeed(seed) {
     const switches = generateSwitchCombination(seed);
     switchTemplate.solution = switches;
   }
+
+  // Atualiza counter
+  const counterTemplate = getTemplateById("template-counter-three");
+  if (counterTemplate) {
+    const target = generateCounterTarget(seed);
+    counterTemplate.devices[0].target = target;
+    counterTemplate.solution[0].clicks = target;
+  }
+
+  // Atualiza cores de todos os dispositivos baseadas na seed
+  updateDeviceColors(seed);
 }
 
 // Gera instruções dinamicamente baseadas nos templates
@@ -988,37 +1113,29 @@ function generateInstructionText(template) {
       return "Clique no contador até o nível 5 no tanque";
 
     case "template-counter-three":
-      return "Clique no contador até o nível 3 no tanque";
+      const counterTarget = solution.find((s) => s.counterId)?.clicks || 3;
+      return `Clique no contador até o nível ${counterTarget} no tanque`;
 
     case "template-keypad-runes":
       const runesPassword = solution.find((s) => s.keypadId)?.password || "";
       return `Digite a sequência de símbolos: ${runesPassword}`;
 
     case "template-keypad-three":
-      const numPassword = solution.find((s) => s.keypadId)?.password || "";
-      return `Digite o código: ${numPassword}`;
+      // Pega o array de números do device ao invés de fazer parsing da string
+      const template = getTemplateById("template-keypad-three");
+      const passwordArray = template?.devices[0]?.passwordArray || [];
+      const formattedNumbers = passwordArray.map((n) =>
+        String(n).padStart(2, "0")
+      );
+      return `Digite os números: ${formattedNumbers
+        .map((v) => " " + v + " ")
+        .join(", ")} (${passwordArray.length} números)`;
 
     case "template-safe-dial":
-      // Pega a combinação do estado do jogo (gerada pela seed) ao invés do template
-      let safeCombination = [];
-      Object.keys(gameConfig.subfaces).forEach((subfaceId) => {
-        if (gameConfig.subfaces[subfaceId] === "template-safe-dial") {
-          const subfaceState = subfaceStates[subfaceId];
-          if (subfaceState && subfaceState.safeDials) {
-            const dialState = Object.values(subfaceState.safeDials)[0];
-            if (dialState && dialState.targetCombination) {
-              safeCombination = dialState.targetCombination;
-            }
-          }
-        }
-      });
-
-      // Fallback para o template se não encontrar no estado
-      if (safeCombination.length === 0) {
-        safeCombination = solution.find((s) => s.safeDialId)?.combination || [];
-      }
-
-      return `Gire o cofre para os números: ${safeCombination.join(", ")}`;
+      const combination = solution.find((s) => s.safeDialId)?.combination || [];
+      return `Gire o cofre para os números: ${combination
+        .map((v) => " " + v + " ")
+        .join(", ")}`;
 
     case "template-color-sequence":
       const colorSeq = solution.find((s) => s.colorSequenceId)?.sequence || [];
@@ -1029,9 +1146,9 @@ function generateInstructionText(template) {
         yellow: "Amarelo",
       };
       const translatedColors = colorSeq.map((c) => colorNames[c] || c);
-      return `Clique na sequência: ${translatedColors.join(", ")} (${
-        colorSeq.length
-      } cores)`;
+      return `Clique na sequência: ${translatedColors
+        .map((v) => " " + v + " ")
+        .join(", ")} (${colorSeq.length} cores)`;
 
     case "template-wire-cutting":
       const wireData = solution.find((s) => s.wireCuttingId);
@@ -1049,7 +1166,9 @@ function generateInstructionText(template) {
           };
           return colors.map((c) => colorMap[c] || c).join("-");
         });
-        return `Corte os fios: ${wireNames.join(", ")}`;
+        return `Corte os fios: ${wireNames
+          .map((v) => " " + v + " ")
+          .join(", ")}`;
       }
       return "Corte os fios corretos";
 
@@ -1093,12 +1212,12 @@ function renderSubface(subfaceId) {
     return;
   }
 
-  // Remove existing devices from this subface
-  subfaceEl
-    .querySelectorAll(
-      ".game-btn-3d, .crank-3d, .switch, .click-counter, .keypad"
-    )
-    .forEach((el) => el.remove());
+  // Remove existing devices from this subface (keep only face-label)
+  const faceLabel = subfaceEl.querySelector(".face-label");
+  subfaceEl.innerHTML = "";
+  if (faceLabel) {
+    subfaceEl.appendChild(faceLabel);
+  }
 
   // Render devices from template
   template.devices.forEach((device) => {
@@ -1445,24 +1564,29 @@ function checkSwitchConfiguration(subfaceId) {
   const template = getTemplateById(subfaceState.templateId);
   if (!template) return;
 
-  // Para F1: sw-1=ON, sw-2=ON (primeiro e segundo ativados)
-  // Para B1: sw-b=ON, sw-c=ON (segundo e terceiro ativados)
+  // Usa a solução dinâmica do template ao invés de lógica hardcoded
+  const expectedSwitches = template.solution;
   let isCorrect = true;
 
-  if (subfaceId === "front-1") {
-    // Switches 1, 3 e 5 devem estar ON, switches 2 e 4 devem estar OFF
-    isCorrect =
-      subfaceState.switches["sw-1"] === true &&
-      subfaceState.switches["sw-2"] === false &&
-      subfaceState.switches["sw-3"] === true &&
-      subfaceState.switches["sw-4"] === false &&
-      subfaceState.switches["sw-5"] === true;
-  } else if (subfaceId === "back-1") {
-    // Segundo e terceiro ON, primeiro OFF
-    isCorrect =
-      subfaceState.switches["sw-a"] === false &&
-      subfaceState.switches["sw-b"] === true &&
-      subfaceState.switches["sw-c"] === true;
+  // Verifica se todos os switches esperados estão ON
+  for (const switchId of expectedSwitches) {
+    if (subfaceState.switches[switchId] !== true) {
+      isCorrect = false;
+      break;
+    }
+  }
+
+  // Verifica se switches não esperados estão OFF
+  if (isCorrect) {
+    for (const switchId in subfaceState.switches) {
+      if (
+        !expectedSwitches.includes(switchId) &&
+        subfaceState.switches[switchId] === true
+      ) {
+        isCorrect = false;
+        break;
+      }
+    }
   }
 
   if (isCorrect) {
@@ -1901,25 +2025,20 @@ function renderKeypad(subfaceEl, device, subfaceId) {
     return key;
   }
 
-  // Create buttons 1-9
-  for (let i = 1; i <= 9; i++) {
-    const key = createSimpleKey(String(i));
+  // Create buttons using keypadNumbers from device (or fallback to 0-9)
+  const keypadNumbers = device.keypadNumbers || [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  // Create 10 number buttons
+  for (let i = 0; i < 10; i++) {
+    const number = keypadNumbers[i];
+    const key = createSimpleKey(String(number).padStart(2, "0")); // Sempre mostra 2 dígitos
     key.addEventListener("click", (e) => {
       e.stopPropagation();
-      handleKeypadPress(device.id, String(i), subfaceId);
+      handleKeypadPress(device.id, String(number).padStart(2, "0"), subfaceId);
     });
     addTouchSupport(key);
     buttonsContainer.appendChild(key);
   }
-
-  // Create 0 button
-  const zeroKey = createSimpleKey("0");
-  zeroKey.addEventListener("click", (e) => {
-    e.stopPropagation();
-    handleKeypadPress(device.id, "0", subfaceId);
-  });
-  addTouchSupport(zeroKey);
-  buttonsContainer.appendChild(zeroKey);
 
   // Create clear button
   const clearKey = createSimpleKey("C", true);
@@ -2685,17 +2804,23 @@ document
     }
   });
 
-// Inicializa o jogo
+// Gera seed da partida
+const seed = generateGameSeed();
+
+// Atualiza templates com valores baseados na seed (ANTES de renderizar)
+updateTemplatesWithSeed(seed);
+
+// Inicializa o jogo (agora com templates já atualizados)
 loadGameConfig();
 
-// Gera seed da partida ANTES das instruções
-generateGameSeed();
-
-// Gera instruções dinâmicas (após a seed estar disponível)
+// Gera instruções dinâmicas (após templates serem atualizados)
 generateInstructions();
 
 // Inicializa o cronômetro da bomba
 initializeBombTimer();
+
+// Configura a edição da seed
+setupSeedEditing();
 
 // ========== SAFE DIAL DEVICE ==========
 
@@ -2708,16 +2833,10 @@ function renderSafeDial(subfaceEl, device, subfaceId) {
     subfaceStates[subfaceId].safeDials = {};
   }
 
-  // Gera combinação baseada na seed se disponível
-  let targetCombination = device.combination || [20, 80, 50];
-  if (gameState.currentSeed) {
-    targetCombination = generateSafeDialCombination(gameState.currentSeed);
-  }
-
   subfaceStates[subfaceId].safeDials[device.id] = {
     currentAngle: 0,
     enteredCombination: [],
-    targetCombination: targetCombination,
+    targetCombination: device.combination || [],
     isLocked: true,
   };
 
@@ -2745,8 +2864,8 @@ function renderSafeDial(subfaceEl, device, subfaceId) {
     numberMark.textContent = i;
     numberMark.style.transform = `rotate(${
       i * 3.6
-    }deg) translateY(-35px) rotate(-${i * 3.6}deg)`;
-    numberMark.style.transformOrigin = "6px 41px"; // Centro do disco (6px do centro do número, 41px do centro do disco)
+    }deg) translateY(-50px) rotate(-${i * 3.6}deg)`;
+    numberMark.style.transformOrigin = "8px 58px"; // Centro do disco ajustado para o novo tamanho
     outerRing.appendChild(numberMark);
   }
 
@@ -2842,7 +2961,7 @@ function renderSafeDial(subfaceEl, device, subfaceId) {
     dialState.currentAngle = ((currentRotation % 360) + 360) % 360;
 
     // Update current number display (snap to multiples of 10)
-    const currentNumber = Math.round(dialState.currentAngle / 36) * 10;
+    const currentNumber = (Math.round(dialState.currentAngle / 36) * 10) % 100;
     updateDialDisplay(subfaceId, device.id);
   }
 
@@ -2853,7 +2972,8 @@ function renderSafeDial(subfaceEl, device, subfaceId) {
 
       // Snap to nearest multiple of 10 and add to combination
       const dialState = subfaceStates[subfaceId].safeDials[device.id];
-      const snappedNumber = Math.round(dialState.currentAngle / 36) * 10;
+      const snappedNumber =
+        (Math.round(dialState.currentAngle / 36) * 10) % 100;
 
       // Calculate the exact angle for the snapped number
       const snappedAngle = snappedNumber * 3.6;
@@ -2922,7 +3042,7 @@ function renderSafeDial(subfaceEl, device, subfaceId) {
 // Updates the dial display showing current number
 function updateDialDisplay(subfaceId, dialId) {
   const dialState = subfaceStates[subfaceId].safeDials[dialId];
-  const currentNumber = Math.round(dialState.currentAngle / 36) * 10;
+  const currentNumber = (Math.round(dialState.currentAngle / 36) * 10) % 100;
 
   // You could add a current number indicator here if needed
 }
@@ -2986,6 +3106,9 @@ function renderColorSequence(subfaceEl, device, subfaceId) {
   subfaceStates[subfaceId].colorSequences[device.id] = {
     targetSequence: device.sequence || ["red", "blue", "green", "yellow"],
     playerSequence: [],
+    timer: null,
+    timeoutCount: 0, // Contador de timeouts
+    isTimerActive: false,
   };
 
   // Create main container
@@ -3100,6 +3223,75 @@ function showColorSequence(subfaceId, deviceId) {
   }, 500);
 }
 
+// Reseta a sequência por timeout
+function resetColorSequenceByTimeout(subfaceId, deviceId) {
+  const subfaceState = subfaceStates[subfaceId];
+  if (!subfaceState || subfaceState.status !== "pending") return;
+
+  const sequenceState = subfaceState.colorSequences[deviceId];
+  if (!sequenceState) return;
+
+  // Incrementa contador de timeouts
+  sequenceState.timeoutCount++;
+  sequenceState.isTimerActive = false;
+
+  // Limpa a sequência do jogador
+  sequenceState.playerSequence = [];
+
+  // Efeito de shake no container
+  const container = document.querySelector(
+    `[data-subface="${subfaceId}"] .color-sequence-container`
+  );
+  if (container) {
+    container.classList.add("shake");
+    setTimeout(() => {
+      container.classList.remove("shake");
+    }, 600);
+  }
+
+  // Se chegou a 3 timeouts, marca como failed
+  if (sequenceState.timeoutCount >= 3) {
+    subfaceState.status = "failed";
+    setSubfaceStatus(subfaceId, "failed");
+  }
+}
+
+// Inicia o timer de 4 segundos
+function startColorSequenceTimer(subfaceId, deviceId) {
+  const subfaceState = subfaceStates[subfaceId];
+  if (!subfaceState || subfaceState.status !== "pending") return;
+
+  const sequenceState = subfaceState.colorSequences[deviceId];
+  if (!sequenceState || sequenceState.isTimerActive) return;
+
+  sequenceState.isTimerActive = true;
+
+  // Limpa timer anterior se existir
+  if (sequenceState.timer) {
+    clearTimeout(sequenceState.timer);
+  }
+
+  // Inicia novo timer de 4 segundos
+  sequenceState.timer = setTimeout(() => {
+    resetColorSequenceByTimeout(subfaceId, deviceId);
+  }, 4000);
+}
+
+// Para o timer
+function stopColorSequenceTimer(subfaceId, deviceId) {
+  const subfaceState = subfaceStates[subfaceId];
+  if (!subfaceState) return;
+
+  const sequenceState = subfaceState.colorSequences[deviceId];
+  if (!sequenceState) return;
+
+  if (sequenceState.timer) {
+    clearTimeout(sequenceState.timer);
+    sequenceState.timer = null;
+  }
+  sequenceState.isTimerActive = false;
+}
+
 // Handles color button click
 function handleColorButtonClick(deviceId, color, subfaceId) {
   const subfaceState = subfaceStates[subfaceId];
@@ -3108,7 +3300,12 @@ function handleColorButtonClick(deviceId, color, subfaceId) {
   const sequenceState = subfaceState.colorSequences[deviceId];
   if (!sequenceState) return;
 
-  // Add color to sequence (always allow up to 5 clicks)
+  // Se é o primeiro clique, inicia o timer
+  if (sequenceState.playerSequence.length === 0) {
+    startColorSequenceTimer(subfaceId, deviceId);
+  }
+
+  // Add color to sequence
   sequenceState.playerSequence.push(color);
 
   // Visual feedback
@@ -3123,10 +3320,13 @@ function handleColorButtonClick(deviceId, color, subfaceId) {
     }, 150);
   }
 
-  // Only check after all clicks
+  // Check if sequence is complete
   if (
     sequenceState.playerSequence.length === sequenceState.targetSequence.length
   ) {
+    // Para o timer pois a sequência foi completada
+    stopColorSequenceTimer(subfaceId, deviceId);
+
     const playerSeq = sequenceState.playerSequence;
     const targetSeq = sequenceState.targetSequence;
 
@@ -3171,12 +3371,12 @@ function renderWireCutting(subfaceEl, device, subfaceId) {
 
   // Wire colors
   const wireColors = {
-    red: "#e74c3c",
-    blue: "#3498db",
-    green: "#2ecc71",
+    red: "#c51818ff",
+    blue: "#1d47c4ff",
+    green: "#1cb25aff",
     yellow: "#f1c40f",
     white: "#ecf0f1",
-    black: "#2c3e50",
+    black: "#17212a",
     orange: "#e67e22",
   };
 
@@ -3224,8 +3424,9 @@ function renderWireCutting(subfaceEl, device, subfaceId) {
       continuousWire.dataset.color2 = color2;
     } else {
       // Fio de cor única (fallback)
-      continuousWire.style.background =
-        wireColors[wire.color || wire.colors[0]];
+      const fallbackColor =
+        wire.color || (wire.colors && wire.colors[0]) || "red";
+      continuousWire.style.background = wireColors[fallbackColor] || "#e74c3c";
     }
 
     wireBody.appendChild(continuousWire);

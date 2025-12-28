@@ -13,14 +13,11 @@ O usuário prefere abrir os arquivos manualmente. Após fazer modificações nos
 - `executePwsh` com comandos de abertura de navegador
 - Qualquer comando que tente abrir arquivos no navegador
 
-## Comandos Recomendados
-
-- `node build.js`
-
 ## Comportamento Correto
 
-1. Fazer as modificações solicitadas
-2. Verificar erros com `getDiagnostics` se necessário
-3. Informar que as alterações foram concluídas
-4. buildar o projeto com o comando "node build.js"
+2. Analisar o que deve ser feito
+2. Explicar o que pretende fazer
+2. Fazer as modificações solicitadas
+3. Verificar erros com `getDiagnostics` se necessário
+4. Informar que as alterações foram concluídas
 

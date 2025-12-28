@@ -807,18 +807,18 @@ body.game-over .instructions-toggle {
   }
 
   .safe-dial-container {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
   }
 
   .safe-dial-outer-ring {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
   }
 
   .safe-dial-inner {
-    width: 60px;
-    height: 60px;
+    width: 85px;
+    height: 85px;
   }
 
   .color-sequence-container {
@@ -1712,9 +1712,9 @@ body.game-over .instructions-toggle {
 
 /* ========== KEYPAD RUNES STYLING ========== */
 .keypad-3d.keypad-runes {
-  background: var(--keypad-color, #4a148c);
-  border: 2px solid rgba(138, 43, 226, 0.5);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 15px rgba(138, 43, 226, 0.3);
+  background: var(--keypad-color, #bdc3c7);
+  border: 2px solid rgba(149, 165, 166, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 15px rgba(149, 165, 166, 0.3);
   width: 180px;
   height: 150px;
   padding: 5px;
@@ -1733,38 +1733,38 @@ body.game-over .instructions-toggle {
 }
 
 .keypad-3d.keypad-runes .keypad-display-3d {
-  background: #2a0845;
-  color: #da70d6;
+  background: #2c3e50; /* Fundo escuro no display */
+  color: #ecf0f1; /* Texto claro no display */
   font-family: serif;
   font-size: 20px;
   letter-spacing: 5px;
-  border: 1px solid rgba(218, 112, 214, 0.4);
+  border: 1px solid rgba(44, 62, 80, 0.8);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 10px rgba(218, 112, 214, 0.2);
+    0 0 10px rgba(236, 240, 241, 0.2);
   height: 32px;
 }
 
 .keypad-3d.keypad-runes .keypad-key-3d .btn-front {
-  background: rgba(138, 43, 226, 0.3);
-  border: 1px solid rgba(218, 112, 214, 0.4);
+  background: rgba(189, 195, 199, 0.9); /* Cinza claro */
+  border: 1px solid rgba(127, 140, 141, 0.4);
   font-family: serif;
   font-size: 16px;
-  color: #da70d6;
-  text-shadow: 0 0 5px rgba(218, 112, 214, 0.5);
+  color: #2c3e50; /* Texto escuro nas teclas */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .keypad-3d.keypad-runes .keypad-key-3d .btn-top {
-  background: rgba(138, 43, 226, 0.4);
+  background: rgba(189, 195, 199, 1); /* Cinza claro mais sólido */
 }
 
 .keypad-3d.keypad-runes .keypad-key-3d.clear .btn-front {
-  background: rgba(139, 0, 139, 0.6);
-  color: #ff69b4;
+  background: rgba(231, 76, 60, 0.8); /* Botão clear vermelho */
+  color: #fff; /* Texto branco no clear */
   font-size: 14px;
 }
 
 .keypad-3d.keypad-runes .keypad-key-3d.clear .btn-top {
-  background: rgba(139, 0, 139, 0.7);
+  background: rgba(231, 76, 60, 0.9);
 }
 
 /* ========== SIMPLIFIED KEYPAD KEYS ========== */
@@ -1808,25 +1808,25 @@ body.game-over .instructions-toggle {
 .keypad-3d.keypad-runes .keypad-key {
   width: 24px;
   height: 24px;
-  background: rgba(138, 43, 226, 0.3);
-  border: 1px solid rgba(218, 112, 214, 0.4);
+  background: rgba(189, 195, 199, 0.9);
+  border: 1px solid rgba(127, 140, 141, 0.4);
   font-size: 21px;
-  color: #dda0dd;
+  color: #2c3e50; /* Texto escuro */
 }
 
 .keypad-3d.keypad-runes .keypad-key:hover {
-  background: rgba(138, 43, 226, 0.4);
-  border-color: rgba(218, 112, 214, 0.6);
+  background: rgba(174, 182, 191, 1); /* Cinza um pouco mais escuro no hover */
+  border-color: rgba(127, 140, 141, 0.6);
 }
 
 .keypad-3d.keypad-runes .keypad-key.clear {
-  background: rgba(139, 0, 139, 0.6);
-  color: #ff69b4;
-  border-color: rgba(139, 0, 139, 0.8);
+  background: rgba(231, 76, 60, 0.8);
+  color: #fff;
+  border-color: rgba(192, 57, 43, 0.6);
 }
 
 .keypad-3d.keypad-runes .keypad-key.clear:hover {
-  background: rgba(139, 0, 139, 0.7);
+  background: rgba(231, 76, 60, 0.9);
 }
 
 /* ========== 3D CRANK (TRUE 3D WITH CYLINDER PANELS) ========== */
@@ -2079,6 +2079,18 @@ body.game-over .instructions-toggle {
 
 .seed-display:hover {
   background: rgba(44, 62, 80, 1);
+}
+
+#seed-value {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+#seed-value:hover {
+  background: rgba(52, 152, 219, 0.3);
+  text-decoration: underline;
 }
 
 /* Conteúdo das instruções */
@@ -2511,8 +2523,8 @@ body.instructions-visible .face-label {
 /* ========== SAFE DIAL DEVICE ========== */
 .safe-dial-container {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2527,8 +2539,8 @@ body.instructions-visible .face-label {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2),
@@ -2540,25 +2552,25 @@ body.instructions-visible .face-label {
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   color: #ecf0f1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   transform-origin: 0 0;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: -6px; /* Metade da largura para centralizar */
-  margin-top: -6px; /* Metade da altura para centralizar */
+  margin-left: -8px; /* Metade da largura para centralizar */
+  margin-top: -8px; /* Metade da altura para centralizar */
 }
 
 /* Inner rotatable dial */
 .safe-dial-inner {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -2577,10 +2589,10 @@ body.instructions-visible .face-label {
 /* Dial pointer */
 .dial-pointer {
   position: absolute;
-  top: 2px;
+  top: 3px;
   left: 50%;
-  width: 2px;
-  height: 15px;
+  width: 3px;
+  height: 20px;
   background: #e74c3c;
   transform: translateX(-50%);
   border-radius: 1px;
@@ -2592,8 +2604,8 @@ body.instructions-visible .face-label {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -2623,6 +2635,31 @@ body.instructions-visible .face-label {
 .subface.failed .safe-dial-container {
   pointer-events: none;
   opacity: 0.6;
+}
+
+/* Shake animation for color sequence timeout */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-3px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+.color-sequence-container.shake {
+  animation: shake 0.6s ease-in-out;
 }
 
 /* ========== COLOR SEQUENCE DEVICE (SIMON SAYS) ========== */
