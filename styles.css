@@ -40,8 +40,8 @@
   --switch-knob-half: 12px;
   --switch-knob-depth: 10px;
 
-  /* Keypad Key (cube) */
-  --key-size: 24px;
+  /* Keypad Key (cube) - ajustado para teclas maiores */
+  --key-size: 30px;
   --key-half: 12px;
   --key-depth: 8px;
   --key-press-offset: -6px;
@@ -69,9 +69,9 @@ body {
 }
 
 .scene {
-  width: 400px;
-  height: 320px;
-  perspective: 1000px;
+  width: 380px;
+  height: 304px;
+  perspective: 950px;
 }
 
 .cube {
@@ -91,8 +91,8 @@ body {
   align-items: center;
   gap: 10px;
   padding: 20px;
-  background: #4a4a4a;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: #162436;
+  border: 1px solid rgba(100, 106, 143, 0.3);
   backface-visibility: visible;
   user-select: none;
   /* Centraliza todas as faces no mesmo ponto */
@@ -102,13 +102,19 @@ body {
   margin-top: -160px; /* metade da altura do front/back */
 }
 
-/* Front e Back - faces principais (400x320) */
+.face.top {
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Front e Back - faces principais (380x304 mobile-first) */
 .front,
 .back {
-  width: 400px;
-  height: 320px;
-  margin-left: -200px;
-  margin-top: -160px;
+  width: 380px;
+  height: 304px;
+  margin-left: -190px;
+  margin-top: -152px;
   padding: 0;
   gap: 0;
   display: grid;
@@ -123,9 +129,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: #4a4a4a;
+  border: 1px solid rgba(255, 255, 255, 0);
+  background: #162436;
   transition: background-color 0.3s ease;
+  transform-style: preserve-3d;
 }
 
 /* Subface solved state - green background */
@@ -139,88 +146,59 @@ body {
 }
 
 /* Disable interactions on resolved subfaces */
-.subface.solved .game-btn,
-.subface.failed .game-btn {
+.subface.solved .game-btn-3d,
+.subface.failed .game-btn-3d {
   pointer-events: none;
   opacity: 0.6;
 }
 
-.subface.solved .crank,
-.subface.failed .crank {
+.subface.solved .crank-3d,
+.subface.failed .crank-3d {
   pointer-events: none;
   opacity: 0.6;
 }
 
-/* Right e Left - faces laterais estreitas (80x320) */
+/* Right e Left - faces laterais estreitas (76x304 mobile-first) */
 .right,
 .left {
-  width: 80px;
-  height: 320px;
-  margin-left: -40px;
-  margin-top: -160px;
+  width: 76px;
+  height: 304px;
+  margin-left: -38px;
+  margin-top: -152px;
 }
 
-/* Top e Bottom - faces finas (400x80) */
+/* Top e Bottom - faces finas (380x76 mobile-first) */
 .top,
 .bottom {
-  width: 400px;
-  height: 80px;
-  margin-left: -200px;
-  margin-top: -40px;
+  width: 380px;
+  height: 76px;
+  margin-left: -190px;
+  margin-top: -38px;
 }
 
 /* 
-  Dimensões: 400 (largura) x 320 (altura) x 80 (profundidade)
-  Front/Back translateZ = profundidade/2 = 40px
-  Right/Left translateZ = largura/2 = 200px
-  Top/Bottom translateZ = altura/2 = 160px
+  Dimensões mobile-first: 380 (largura) x 304 (altura) x 76 (profundidade)
+  Front/Back translateZ = profundidade/2 = 38px
+  Right/Left translateZ = largura/2 = 190px
+  Top/Bottom translateZ = altura/2 = 152px
 */
 .front {
-  transform: translateZ(40px);
+  transform: translateZ(38px);
 }
 .back {
-  transform: rotateY(180deg) translateZ(40px);
+  transform: rotateY(180deg) translateZ(38px);
 }
 .right {
-  transform: rotateY(90deg) translateZ(200px);
+  transform: rotateY(90deg) translateZ(190px);
 }
 .left {
-  transform: rotateY(-90deg) translateZ(200px);
+  transform: rotateY(-90deg) translateZ(190px);
 }
 .top {
-  transform: rotateX(90deg) translateZ(160px);
+  transform: rotateX(90deg) translateZ(152px);
 }
 .bottom {
-  transform: rotateX(-90deg) translateZ(160px);
-}
-
-/* Game buttons - simple 2D style */
-.game-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  font-size: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.1s;
-}
-
-.game-btn:hover {
-  transform: scale(1.05);
-}
-
-.game-btn:active {
-  transform: scale(0.95);
-}
-
-/* Disable on resolved subfaces */
-.subface.solved .game-btn,
-.subface.failed .game-btn {
-  pointer-events: none;
-  opacity: 0.6;
+  transform: rotateX(-90deg) translateZ(152px);
 }
 
 /* Cranks - TRUE 3D projecting outward */
@@ -316,6 +294,22 @@ body {
   opacity: 0.6;
 }
 
+.bomb-timer {
+  top: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  min-width: 90px;
+}
+
+.timer-display {
+  font-size: 20px;
+  margin-bottom: 3px;
+}
+
+.timer-label {
+  font-size: 8px;
+}
+
 /* Message overlay */
 .overlay {
   position: fixed;
@@ -335,11 +329,27 @@ body {
   display: flex;
 }
 
+/* Efeito de blur para game over */
+.overlay.game-over {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Blur no conteúdo de fundo quando game over */
+body.game-over .scene,
+body.game-over .instructions-panel,
+body.game-over .instructions-toggle {
+  filter: blur(8px);
+  transition: filter 0.5s ease;
+}
+
 .message {
-  font-size: 32px;
+  font-size: 24px;
   color: white;
   margin-bottom: 30px;
   text-align: center;
+  max-width: 600px;
 }
 
 .message.victory {
@@ -350,9 +360,43 @@ body {
   color: #e74c3c;
 }
 
+/* Estilo especial para game over */
+.message.failure h1 {
+  font-size: 48px;
+  color: #e74c3c;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px rgba(231, 76, 60, 0.8);
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.message.failure p {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Estilo especial para vitória */
+.message.victory h1 {
+  font-size: 48px;
+  color: #2ecc71;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.message.victory p {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
 .retry-btn {
-  padding: 15px 40px;
-  font-size: 20px;
+  padding: 12px 30px;
+  font-size: 16px;
   background: #3498db;
   color: white;
   border: none;
@@ -365,101 +409,434 @@ body {
   background: #2980b9;
 }
 
-/* Sequence indicator */
-.sequence-indicator {
+/* Bomb Timer com Display LED de 7 Segmentos */
+.bomb-timer {
   position: fixed;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 20px;
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 3px solid #e74c3c;
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 20px rgba(231, 76, 60, 0.3);
+  z-index: 60;
+  font-family: "Courier New", monospace;
+  text-align: center;
+  min-width: 160px;
+}
+
+/* Display LED Container */
+.led-display {
   display: flex;
-  gap: 10px;
-  z-index: 50;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #000;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 2px solid #333;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-.sequence-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #333;
-  border: 2px solid #666;
+/* Grupo de dígitos */
+.digit-group {
+  display: flex;
+  gap: 4px;
 }
 
-.sequence-dot.filled {
-  background: #2ecc71;
-  border-color: #27ae60;
+/* Dígito LED individual */
+.led-digit {
+  position: relative;
+  width: 24px;
+  height: 36px;
+  margin: 2px;
+}
+
+/* Dois pontos LED */
+.led-colon {
+  color: #e74c3c;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(231, 76, 60, 0.8);
+  align-self: center;
+  margin: 0 4px;
+}
+
+/* Segmentos do display de 7 segmentos */
+.segment {
+  position: absolute;
+  background: #1a0000;
+  border-radius: 1px;
+  transition: all 0.2s ease;
+}
+
+.segment.active {
+  background: #e74c3c;
+  box-shadow: 0 0 6px rgba(231, 76, 60, 0.8),
+    inset 0 1px 2px rgba(255, 100, 100, 0.3);
+}
+
+/* Segmento A (topo) */
+.segment-a {
+  top: 0;
+  left: 2px;
+  width: 16px;
+  height: 3px;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+}
+
+/* Segmento B (direita superior) */
+.segment-b {
+  top: 2px;
+  right: 0;
+  width: 3px;
+  height: 14px;
+  clip-path: polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%);
+}
+
+/* Segmento C (direita inferior) */
+.segment-c {
+  bottom: 2px;
+  right: 0;
+  width: 3px;
+  height: 14px;
+  clip-path: polygon(0% 0%, 100% 10%, 100% 90%, 0% 100%);
+}
+
+/* Segmento D (fundo) */
+.segment-d {
+  bottom: 0;
+  left: 2px;
+  width: 16px;
+  height: 3px;
+  clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);
+}
+
+/* Segmento E (esquerda inferior) */
+.segment-e {
+  bottom: 2px;
+  left: 0;
+  width: 3px;
+  height: 14px;
+  clip-path: polygon(0% 10%, 100% 0%, 100% 100%, 0% 90%);
+}
+
+/* Segmento F (esquerda superior) */
+.segment-f {
+  top: 2px;
+  left: 0;
+  width: 3px;
+  height: 14px;
+  clip-path: polygon(0% 0%, 100% 10%, 100% 100%, 0% 90%);
+}
+
+/* Segmento G (meio) */
+.segment-g {
+  top: 50%;
+  left: 2px;
+  width: 16px;
+  height: 3px;
+  transform: translateY(-50%);
+  clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+}
+
+.timer-label {
+  font-size: 10px;
+  color: #bdc3c7;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Timer warning states */
+.bomb-timer.warning {
+  border-color: #f39c12;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 20px rgba(243, 156, 18, 0.4);
+}
+
+.bomb-timer.warning .segment.active {
+  background: #f39c12;
+  box-shadow: 0 0 6px rgba(243, 156, 18, 0.8),
+    inset 0 1px 2px rgba(255, 200, 100, 0.3);
+}
+
+.bomb-timer.warning .led-colon {
+  color: #f39c12;
+  text-shadow: 0 0 8px rgba(243, 156, 18, 0.8);
+}
+
+.bomb-timer.critical {
+  border-color: #e74c3c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 30px rgba(231, 76, 60, 0.6);
+  animation: timer-pulse 1s ease-in-out infinite alternate;
+}
+
+.bomb-timer.critical .segment.active {
+  background: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 1),
+    inset 0 1px 2px rgba(255, 100, 100, 0.4);
+}
+
+.bomb-timer.critical .led-colon {
+  color: #e74c3c;
+  text-shadow: 0 0 12px rgba(231, 76, 60, 1);
+}
+
+@keyframes timer-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 30px rgba(231, 76, 60, 0.6);
+  }
+  100% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 40px rgba(231, 76, 60, 0.8);
+  }
 }
 
 /* Responsive scaling for smaller screens */
-@media (max-width: 480px) {
+@media (min-width: 768px) {
   .scene {
-    width: 300px;
-    height: 240px;
+    width: 420px;
+    height: 336px;
+    perspective: 1000px;
   }
 
   .front,
   .back {
-    width: 300px;
-    height: 240px;
-    margin-left: -150px;
-    margin-top: -120px;
+    width: 420px;
+    height: 336px;
+    margin-left: -210px;
+    margin-top: -168px;
   }
 
   .right,
   .left {
-    width: 60px;
-    height: 240px;
-    margin-left: -30px;
-    margin-top: -120px;
+    width: 84px;
+    height: 336px;
+    margin-left: -42px;
+    margin-top: -168px;
   }
 
   .top,
   .bottom {
-    width: 300px;
-    height: 60px;
-    margin-left: -150px;
-    margin-top: -30px;
+    width: 420px;
+    height: 84px;
+    margin-left: -210px;
+    margin-top: -42px;
   }
 
   .front {
-    transform: translateZ(30px);
+    transform: translateZ(42px);
   }
   .back {
-    transform: rotateY(180deg) translateZ(30px);
+    transform: rotateY(180deg) translateZ(42px);
   }
   .right {
-    transform: rotateY(90deg) translateZ(150px);
+    transform: rotateY(90deg) translateZ(210px);
   }
   .left {
-    transform: rotateY(-90deg) translateZ(150px);
+    transform: rotateY(-90deg) translateZ(210px);
   }
   .top {
-    transform: rotateX(90deg) translateZ(120px);
+    transform: rotateX(90deg) translateZ(168px);
   }
   .bottom {
-    transform: rotateX(-90deg) translateZ(120px);
+    transform: rotateX(-90deg) translateZ(168px);
   }
 
-  .game-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+  .toggle-text {
+    font-size: 9px;
   }
 
-  .crank {
-    width: 55px;
-    height: 55px;
+  .bomb-timer {
+    top: 15px;
+    right: 15px;
+    padding: 12px 18px;
+    min-width: 140px;
+  }
+
+  .led-display {
+    padding: 8px 12px;
+  }
+
+  .led-digit {
+    width: 20px;
+    height: 30px;
+  }
+
+  .led-colon {
+    font-size: 20px;
+  }
+
+  .timer-label {
+    font-size: 9px;
+  }
+
+  .switch {
+    width: 58px;
+    height: 29px;
+  }
+
+  .switch-knob {
+    width: 25px;
+    height: 25px;
+  }
+
+  .switch.on .switch-knob {
+    left: 31px;
+  }
+
+  .click-counter {
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scene {
+    width: 400px;
+    height: 320px;
+    perspective: 1000px;
+  }
+
+  .front,
+  .back {
+    width: 400px;
+    height: 320px;
+    margin-left: -200px;
+    margin-top: -160px;
+  }
+
+  .right,
+  .left {
+    width: 80px;
+    height: 320px;
+    margin-left: -40px;
+    margin-top: -160px;
+  }
+
+  .top,
+  .bottom {
+    width: 400px;
+    height: 80px;
+    margin-left: -200px;
+    margin-top: -40px;
+  }
+
+  .front {
+    transform: translateZ(40px);
+  }
+  .back {
+    transform: rotateY(180deg) translateZ(40px);
+  }
+  .right {
+    transform: rotateY(90deg) translateZ(200px);
+  }
+  .left {
+    transform: rotateY(-90deg) translateZ(200px);
+  }
+  .top {
+    transform: rotateX(90deg) translateZ(160px);
+  }
+  .bottom {
+    transform: rotateX(-90deg) translateZ(160px);
+  }
+
+  .bomb-timer {
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    min-width: 160px;
+  }
+
+  .led-display {
+    padding: 10px 15px;
+  }
+
+  .led-digit {
+    width: 24px;
+    height: 36px;
+  }
+
+  .led-colon {
+    font-size: 24px;
+  }
+
+  .timer-label {
+    font-size: 10px;
   }
 
   .message {
-    font-size: 24px;
+    font-size: 32px;
+  }
+
+  .retry-btn {
+    padding: 15px 40px;
+    font-size: 20px;
+  }
+
+  .switch {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+  }
+
+  .switch-knob {
+    width: 26px;
+    height: 26px;
+  }
+
+  .switch.on .switch-knob {
+    left: 32px;
+  }
+
+  .wire-cutting-container {
+    min-height: 140px;
+    gap: 15px;
+    padding: 8px;
+  }
+
+  .wire-element {
+    width: 10px;
+    min-height: 100px;
+  }
+
+  .safe-dial-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .safe-dial-outer-ring {
+    width: 80px;
+    height: 80px;
+  }
+
+  .safe-dial-inner {
+    width: 60px;
+    height: 60px;
+  }
+
+  .color-sequence-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .color-btn {
+    width: 45px;
+    height: 45px;
   }
 }
 
 /* ========== SWITCH DEVICE - 3D ========== */
 .switch {
-  width: 60px;
-  height: 30px;
-  border-radius: 15px;
+  width: 55px;
+  height: 28px;
+  border-radius: 14px;
   cursor: pointer;
   position: relative;
   transform-style: preserve-3d;
@@ -493,8 +870,8 @@ body {
 
 .switch-knob {
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   top: 2px;
   left: 2px;
@@ -508,7 +885,7 @@ body {
 }
 
 .switch.on .switch-knob {
-  left: 32px;
+  left: 29px;
 }
 
 /* Disable switch on resolved subfaces */
@@ -674,55 +1051,69 @@ body {
   opacity: 0.6;
 }
 
-/* Responsive scaling for new devices */
-@media (max-width: 480px) {
-  .switch {
-    width: 50px;
-    height: 25px;
-    border-radius: 12px;
-  }
-
-  .switch-knob {
-    width: 21px;
-    height: 21px;
-  }
-
-  .switch.on .switch-knob {
-    transform: translateX(25px);
-  }
-
-  .click-counter {
-    width: 55px;
-    height: 55px;
-  }
-
-  .counter-display {
-    font-size: 14px;
-  }
-
-  .keypad {
-    padding: 4px;
-    gap: 2px;
-  }
-
-  .keypad-display {
-    height: 20px;
-    font-size: 14px;
-  }
-
-  .keypad-btn {
-    width: 22px;
-    height: 22px;
-    font-size: 12px;
-  }
-
-  .keypad-btn-placeholder {
-    width: 22px;
-    height: 22px;
-  }
+/* Base mobile styles for click counter */
+.click-counter {
+  width: 65px;
+  height: 65px;
 }
 
-/* ========== TRUE 3D PRIMITIVES ========== */
+.counter-display {
+  font-size: 16px;
+}
+
+.keypad {
+  padding: 4px;
+  gap: 2px;
+}
+
+.keypad-display {
+  height: 20px;
+  font-size: 14px;
+}
+
+.keypad-btn {
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+
+.keypad-3d.keypad-runes {
+  width: 220px;
+  height: 100px;
+  padding: 5px;
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d {
+  width: 18px;
+  height: 18px;
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d .btn-face {
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+}
+
+.keypad-3d.keypad-runes .keypad-display-3d {
+  height: 24px;
+  font-size: 16px;
+  letter-spacing: 3px;
+}
+
+.keypad-buttons-3d.keypad-runes-4col {
+  gap: 3px;
+}
+
+.keypad-3d.keypad-runes .keypad-display-3d {
+  height: 18px;
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+
+.keypad-btn-placeholder-3d {
+  width: 16px;
+  height: 16px;
+}
 
 /* ========== 3D CYLINDER PRIMITIVE ========== */
 .button-cylinder {
@@ -849,11 +1240,6 @@ body {
   transform: translateZ(var(--key-press-offset));
 }
 
-/* Ensure subfaces support 3D children */
-.subface {
-  transform-style: preserve-3d;
-}
-
 /* Disable 3D devices on resolved subfaces */
 .subface.solved .button-cylinder,
 .subface.solved .button-3d,
@@ -921,92 +1307,192 @@ body {
   margin-top: -20px;
 }
 
-/* ========== 3D SWITCH ========== */
+/* ========== 3D CIRCUIT BREAKER SWITCH (DISJUNTOR) ========== */
 .switch-3d {
-  width: 60px;
-  height: 30px;
+  width: 40px;
+  height: 80px;
   position: relative;
+  margin-bottom: 40px;
   transform-style: preserve-3d;
+  cursor: pointer;
+  background: #2c3e50;
+  border-radius: 4px;
+  border: 2px solid #34495e;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Painel base do disjuntor */
+.switch-track-3d {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  background: linear-gradient(145deg, #34495e 0%, #2c3e50 50%, #1a252f 100%);
+  border-radius: 4px;
+}
+
+/* Slots guia do disjuntor */
+.switch-track-3d::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 50px;
+  left: 50%;
+  top: 15px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Alavanca do disjuntor */
+.switch-knob-3d {
+  position: absolute;
+  width: 18px;
+  height: 25px;
+  left: 50%;
+  top: 15px;
+  transform: translateX(-50%);
+  transform-style: preserve-3d;
+  transform-origin: center bottom;
+  transition: transform 0.2s ease-out;
   cursor: pointer;
 }
 
-.switch-track-3d {
-  position: absolute;
-  width: 60px;
-  height: 30px;
-  border-radius: 15px;
-  transform-style: preserve-3d;
-  background: var(--switch-off-color, #95a5a6);
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
-  transition: background-color 0.3s ease;
+/* Estado OFF - alavanca para baixo */
+.switch-3d .switch-knob-3d {
+  transform: translateX(-50%) translateY(20px);
 }
 
-.switch-3d.on .switch-track-3d {
-  background: var(--switch-on-color, #2ecc71);
-}
-
-.switch-knob-3d {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 3px;
-  left: 3px;
-  transform-style: preserve-3d;
-  transition: left 0.3s ease;
-}
-
+/* Estado ON - alavanca para cima */
 .switch-3d.on .switch-knob-3d {
-  left: 33px;
+  transform: translateX(-50%) translateY(0px);
 }
 
+/* Faces da alavanca do disjuntor */
 .switch-knob-3d .btn-face {
   position: absolute;
-  width: 24px;
-  height: 24px;
 }
 
+/* Face frontal da alavanca */
 .switch-knob-3d .btn-front {
-  transform: translateZ(12px);
-  background: #ffffff;
-  border-radius: 50%;
+  width: 18px;
+  height: 25px;
+  transform: translateZ(3px);
+  background: linear-gradient(to bottom, #7f8c8d 0%, #95a5a6 50%, #bdc3c7 100%);
+  border-radius: 2px;
+  border: 1px solid #34495e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s ease;
 }
 
+.switch-3d.on .switch-knob-3d .btn-front {
+  background: linear-gradient(to bottom, #95a5a6 0%, #bdc3c7 50%, #ecf0f1 100%);
+  border-color: #7f8c8d;
+}
+
+/* Face traseira da alavanca */
 .switch-knob-3d .btn-back {
-  transform: rotateY(180deg) translateZ(12px);
-  background: #999999;
-  border-radius: 50%;
+  width: 18px;
+  height: 25px;
+  transform: rotateY(180deg) translateZ(3px);
+  background: #555;
+  border-radius: 2px;
 }
 
+/* Laterais da alavanca */
 .switch-knob-3d .btn-right {
-  width: 24px;
-  height: 24px;
-  transform: rotateY(90deg) translateZ(12px);
-  background: #e0e0e0;
-  border-radius: 0;
+  width: 6px;
+  height: 25px;
+  transform: rotateY(90deg) translateZ(15px);
+  background: linear-gradient(to bottom, #666, #444);
 }
 
 .switch-knob-3d .btn-left {
-  width: 24px;
-  height: 24px;
-  transform: rotateY(-90deg) translateZ(12px);
-  background: #cccccc;
-  border-radius: 0;
+  width: 6px;
+  height: 25px;
+  transform: rotateY(-90deg) translateZ(3px);
+  background: linear-gradient(to bottom, #666, #444);
 }
 
+/* Topo e fundo da alavanca */
 .switch-knob-3d .btn-top {
-  width: 24px;
-  height: 24px;
-  transform: rotateX(90deg) translateZ(12px);
-  background: #f5f5f5;
-  border-radius: 0;
+  width: 18px;
+  height: 6px;
+  transform: rotateX(90deg) translateZ(22px);
+  background: #777;
+  border-radius: 2px;
 }
 
 .switch-knob-3d .btn-bottom {
-  width: 24px;
-  height: 24px;
-  transform: rotateX(-90deg) translateZ(12px);
-  background: #999999;
-  border-radius: 0;
+  width: 18px;
+  height: 6px;
+  transform: rotateX(-90deg) translateZ(3px);
+  background: #333;
+  border-radius: 2px;
+}
+
+/* Labels e indicadores do painel elétrico */
+.switch-3d .circuit-label {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(5px);
+  font-size: 8px;
+  color: #bdc3c7;
+  font-weight: bold;
+  text-align: center;
+  pointer-events: none;
+}
+
+.switch-3d .status-led {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  top: 5px;
+  right: 5px;
+  border-radius: 50%;
+  background: #7f8c8d;
+  transform: translateZ(4px);
+  box-shadow: 0 0 2px rgba(127, 140, 141, 0.3);
+  transition: all 0.3s ease;
+}
+
+.switch-3d.on .status-led {
+  background: #bdc3c7;
+  box-shadow: 0 0 4px rgba(189, 195, 199, 0.5);
+}
+
+/* Parafusos decorativos do painel */
+.switch-3d::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  top: 3px;
+  left: 3px;
+  background: radial-gradient(circle, #95a5a6, #7f8c8d);
+  border-radius: 50%;
+  transform: translateZ(4px);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.switch-3d::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  bottom: 3px;
+  left: 3px;
+  background: radial-gradient(circle, #95a5a6, #7f8c8d);
+  border-radius: 50%;
+  transform: translateZ(4px);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 /* ========== 3D CLICK COUNTER (CYLINDER) ========== */
@@ -1032,6 +1518,37 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Design de bomba hidráulica */
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Adiciona detalhes de bomba no topo */
+.click-counter-3d .cylinder-top::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #fff, #ccc);
+  border-radius: 50%;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Adiciona anel de vedação visual */
+.click-counter-3d .cylinder-top::after {
+  content: "";
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .click-counter-3d .cylinder-bottom {
@@ -1061,12 +1578,14 @@ body {
 }
 
 .click-counter-3d .counter-display {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 1;
+  font-family: "Courier New", monospace;
+  letter-spacing: 1px;
 }
 
 /* ========== 3D KEYPAD ========== */
@@ -1074,21 +1593,23 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 8px;
+  padding: 6px;
   background: var(--keypad-color, #34495e);
   border-radius: 8px;
   transform-style: preserve-3d;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 180px;
+  height: 140px;
 }
 
 .keypad-display-3d {
   width: 100%;
-  height: 24px;
+  min-height: 28px;
   background: #1a1a2e;
   border-radius: 4px;
   color: #2ecc71;
   font-family: monospace;
-  font-size: 16px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1099,9 +1620,20 @@ body {
 
 .keypad-buttons-3d {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
   transform-style: preserve-3d;
+}
+
+/* Layout de 5 colunas para keypad de runas expandido (14 runas + 1 clear) */
+.keypad-buttons-3d.keypad-runes-4col {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+}
+
+.subface .keypad-runes .keypad-runes-4col .keypad-key {
+  width: calc(var(--key-size) + 1px);
+  height: var(--key-size);
 }
 
 .keypad-key-3d {
@@ -1176,6 +1708,125 @@ body {
 .keypad-btn-placeholder-3d {
   width: var(--key-size);
   height: var(--key-size);
+}
+
+/* ========== KEYPAD RUNES STYLING ========== */
+.keypad-3d.keypad-runes {
+  background: var(--keypad-color, #4a148c);
+  border: 2px solid rgba(138, 43, 226, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 15px rgba(138, 43, 226, 0.3);
+  width: 180px;
+  height: 150px;
+  padding: 5px;
+}
+
+/* Teclas maiores para melhor visualização */
+.keypad-3d.keypad-runes .keypad-key-3d {
+  width: 24px;
+  height: 24px;
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d .btn-face {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+}
+
+.keypad-3d.keypad-runes .keypad-display-3d {
+  background: #2a0845;
+  color: #da70d6;
+  font-family: serif;
+  font-size: 20px;
+  letter-spacing: 5px;
+  border: 1px solid rgba(218, 112, 214, 0.4);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(218, 112, 214, 0.2);
+  height: 32px;
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d .btn-front {
+  background: rgba(138, 43, 226, 0.3);
+  border: 1px solid rgba(218, 112, 214, 0.4);
+  font-family: serif;
+  font-size: 16px;
+  color: #da70d6;
+  text-shadow: 0 0 5px rgba(218, 112, 214, 0.5);
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d .btn-top {
+  background: rgba(138, 43, 226, 0.4);
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d.clear .btn-front {
+  background: rgba(139, 0, 139, 0.6);
+  color: #ff69b4;
+  font-size: 14px;
+}
+
+.keypad-3d.keypad-runes .keypad-key-3d.clear .btn-top {
+  background: rgba(139, 0, 139, 0.7);
+}
+
+/* ========== SIMPLIFIED KEYPAD KEYS ========== */
+.keypad-key {
+  width: calc(var(--key-size) + 9px);
+  height: var(--key-size);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  user-select: none;
+}
+
+.keypad-key:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.keypad-key.pressed {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0.95);
+}
+
+.keypad-key.clear {
+  background: rgba(231, 76, 60, 0.6);
+  border-color: rgba(231, 76, 60, 0.8);
+}
+
+.keypad-key.clear:hover {
+  background: rgba(231, 76, 60, 0.7);
+}
+
+/* Runic keypad specific styles */
+.keypad-3d.keypad-runes .keypad-key {
+  width: 24px;
+  height: 24px;
+  background: rgba(138, 43, 226, 0.3);
+  border: 1px solid rgba(218, 112, 214, 0.4);
+  font-size: 21px;
+  color: #dda0dd;
+}
+
+.keypad-3d.keypad-runes .keypad-key:hover {
+  background: rgba(138, 43, 226, 0.4);
+  border-color: rgba(218, 112, 214, 0.6);
+}
+
+.keypad-3d.keypad-runes .keypad-key.clear {
+  background: rgba(139, 0, 139, 0.6);
+  color: #ff69b4;
+  border-color: rgba(139, 0, 139, 0.8);
+}
+
+.keypad-3d.keypad-runes .keypad-key.clear:hover {
+  background: rgba(139, 0, 139, 0.7);
 }
 
 /* ========== 3D CRANK (TRUE 3D WITH CYLINDER PANELS) ========== */
@@ -1363,4 +2014,959 @@ body {
   padding: 2px 8px;
   border-radius: 4px;
   white-space: nowrap;
+}
+/* ========== CIRCUIT BREAKER PANEL EXTRAS ========== */
+
+/* ========== INSTRUCTIONS PANEL SIMPLIFICADO ========== */
+.instructions-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(44, 62, 80, 0.95);
+  border-top: 2px solid #34495e;
+  font-family: Arial, sans-serif;
+  z-index: 50;
+  height: 90vh;
+  overflow-y: auto;
+}
+
+/* Estado recolhido - escondido embaixo */
+.instructions-panel.collapsed {
+  transform: translateY(100%);
+}
+
+/* Botão de toggle */
+.instructions-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: #3498db;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  z-index: 51;
+}
+
+.instructions-toggle:hover {
+  background: #2980b9;
+}
+
+/* Seed display */
+.seed-display {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(44, 62, 80, 0.9);
+  color: #ecf0f1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid rgba(52, 73, 94, 0.8);
+  z-index: 60;
+  user-select: text;
+  cursor: text;
+}
+
+.seed-display:hover {
+  background: rgba(44, 62, 80, 1);
+}
+
+/* Conteúdo das instruções */
+.instructions-content {
+  padding: 30px;
+}
+
+.instructions-panel h3 {
+  color: #ecf0f1;
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.instruction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(52, 73, 94, 0.6);
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.face-index {
+  background: #3498db;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.instruction-text {
+  color: #bdc3c7;
+  font-size: 16px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* ========== FACE LABELS ========== */
+.face-label {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #3498db;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: bold;
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Mostra os labels quando as instruções estão expandidas */
+body.instructions-visible .face-label {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ========== CLICK COUNTER ANIMATIONS ========== */
+
+/* Animação de bombeamento do contador */
+.click-counter-3d.clicked-animation {
+  animation: pump-action 0.2s ease-out;
+}
+
+@keyframes pump-action {
+  0% {
+    transform: translateZ(19px) scale(1);
+  }
+  50% {
+    transform: translateZ(5px) scale(0.95);
+  }
+  100% {
+    transform: translateZ(19px) scale(1);
+  }
+}
+
+/* Efeito de pressão no cilindro */
+.click-counter-3d.pressed {
+  transform: translateZ(5px);
+}
+/* ========== SWITCH SUBMIT BUTTON ========== */
+.switch-submit-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  transform: translateZ(5px);
+}
+
+.switch-submit-btn:hover {
+  background: linear-gradient(145deg, #5dade2, #3498db);
+  transform: translateZ(7px) scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.switch-submit-btn:active {
+  transform: translateZ(2px) scale(0.95);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== COUNTER SUBMIT BUTTON ========== */
+.counter-submit-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  transform: translateZ(5px);
+}
+
+.counter-submit-btn:hover {
+  background: linear-gradient(145deg, #5dade2, #3498db);
+  transform: translateZ(7px) scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.counter-submit-btn:active {
+  transform: translateZ(2px) scale(0.95);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+/* ========== SWITCH INTERACTION FIX ========== */
+
+/* Remove efeitos visuais indesejados do switch */
+.switch-3d:hover,
+.switch-3d:active,
+.switch-3d:focus {
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* Garante que toda a área do switch seja clicável */
+.switch-3d {
+  cursor: pointer;
+}
+
+.switch-3d * {
+  pointer-events: none; /* Evita que elementos filhos interceptem cliques */
+}
+/* ========== COUNTER TANK VISUAL ========== */
+
+/* Container para botão + tanque */
+.counter-container {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  transform-style: preserve-3d;
+  flex-direction: row-reverse; /* Inverte a ordem: tanque à esquerda, botão à direita */
+}
+
+/* Tanque principal */
+.counter-tank {
+  width: 25px;
+  height: 120px; /* Diminuído de 120px para 100px */
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Corpo do tanque */
+.tank-body {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(145deg, #34495e, #2c3e50);
+  border-radius: 4px;
+  border: 2px solid #1a252f;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+/* Líquido do tanque */
+.tank-liquid {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  right: 2px;
+  background: linear-gradient(to top, #3498db 0%, #5dade2 50%, #85c1e9 100%);
+  border-radius: 0 0 2px 2px;
+  transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+/* Efeito de borbulhamento */
+.tank-liquid.bubbling {
+  animation: bubble-effect 0.5s ease-out;
+}
+
+@keyframes bubble-effect {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3) saturate(1.2);
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.6);
+  }
+}
+
+/* Vidro frontal do tanque */
+.tank-glass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 70%,
+    transparent 100%
+  );
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Marcações do tanque */
+.tank-mark {
+  position: absolute;
+  right: -8px;
+  width: 14px;
+  height: 1px;
+  background: #7f8c8d;
+  transform: translateZ(2px);
+}
+
+.tank-mark::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: -1px;
+  width: 14px;
+  height: 3px;
+  background: #7f8c8d;
+}
+
+/* Efeito de ondulação no líquido */
+.tank-liquid::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(0.5);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleX(1.1) scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive para tanques */
+@media (max-width: 480px) {
+  .counter-container {
+    gap: 25px; /* Aumentado de 15px para 20px - ainda mais espaço entre botão e tanque */
+  }
+
+  .counter-tank {
+    width: 35px; /* Aumentado de 28px para 35px - tanque bem mais largo */
+    height: 110px; /* Mantém altura equilibrada */
+  }
+
+  .tank-mark {
+    right: -12px; /* Movido para atravessar o tanque */
+    width: 50px; /* Aumentado significativamente - atravessa o tanque */
+  }
+
+  .tank-mark::after {
+    right: -2px; /* Ajustado */
+    width: 14px; /* Reduzido */
+    height: 2px; /* Reduzido */
+  }
+}
+
+/* Media query para tablets - transição suave */
+@media (min-width: 481px) and (max-width: 767px) {
+  .counter-container {
+    gap: 25px;
+  }
+
+  .tank-y-axis {
+    width: 14px;
+    height: 80px;
+  }
+
+  .y-axis-label {
+    font-size: 7px;
+    left: 19px;
+  }
+
+  .counter-tank {
+    gap: 0px;
+    height: 80px;
+  }
+
+  .tank-mark {
+    right: -5px;
+    width: 14px;
+  }
+}
+/* ========== TANK Y-AXIS AND TARGET LINE ========== */
+
+/* Eixo Y ao lado do tanque */
+.tank-y-axis {
+  position: relative;
+  height: 100px; /* Diminuído de 120px para 100px */
+  width: 15px; /* Diminuído de 20px para 15px */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Marcações do eixo Y */
+.y-axis-mark {
+  position: absolute;
+  left: 0px;
+  width: 8px; /* Diminuído de 8px para 6px */
+  height: 1px;
+  background: #7f8c8d;
+  display: flex;
+  align-items: center;
+}
+
+.y-axis-mark::before {
+  content: "";
+  width: 8px; /* Diminuído de 8px para 6px */
+  height: 1px;
+  background: #7f8c8d;
+}
+
+/* Labels dos números no eixo Y */
+.y-axis-label {
+  position: absolute;
+  left: 10px; /* Ajustado para acompanhar o novo tamanho dos traços */
+  top: -4px;
+  font-size: 8px;
+  color: #bdc3c7;
+  font-weight: bold;
+  width: 10px;
+  text-align: left;
+}
+
+/* Atualiza layout do tanque para incluir eixo Y */
+.counter-tank {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  width: 40px;
+  height: 105px; /* Diminuído de 120px para 100px */
+}
+
+/* Responsive para eixo Y */
+@media (max-width: 480px) {
+  .tank-y-axis {
+    width: 16px; /* Aumentado de 14px para 16px para acompanhar tanque mais largo */
+    height: 110px; /* Mantém altura do tanque */
+  }
+
+  .y-axis-mark {
+    width: 10px; /* Aumentado para atravessar o tanque */
+  }
+
+  .y-axis-mark::before {
+    width: 10px; /* Aumentado para atravessar o tanque */
+  }
+
+  .y-axis-label {
+    font-size: 10px;
+    left: 14px; /* Aproximado mais do tank - de 8px para 4px */
+  }
+
+  .counter-tank {
+    gap: 2px; /* Diminuído de 6px para 4px - legenda mais próxima do tanque */
+    height: 120px; /* Mantém altura equilibrada */
+  }
+
+  .counter-container {
+    gap: 25px; /* Aumentado de 15px para 20px - ainda mais espaço entre botão e tanque */
+  }
+}
+/* ========== SAFE DIAL DEVICE ========== */
+.safe-dial-container {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  margin: auto;
+}
+
+/* Outer ring with numbers */
+.safe-dial-outer-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Numbers around the dial */
+.dial-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ecf0f1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transform-origin: 0 0;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -6px; /* Metade da largura para centralizar */
+  margin-top: -6px; /* Metade da altura para centralizar */
+}
+
+/* Inner rotatable dial */
+.safe-dial-inner {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: transform 0.1s ease-out;
+}
+
+.safe-dial-inner:active {
+  cursor: grabbing;
+}
+
+/* Dial pointer */
+.dial-pointer {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 2px;
+  height: 15px;
+  background: #e74c3c;
+  transform: translateX(-50%);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Center knob */
+.dial-center-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Combination display */
+.combination-display {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ecf0f1;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  letter-spacing: 1px;
+  min-width: 35px;
+  text-align: center;
+}
+
+/* Disable safe dial on resolved subfaces */
+.subface.solved .safe-dial-container,
+.subface.failed .safe-dial-container {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ========== COLOR SEQUENCE DEVICE (SIMON SAYS) ========== */
+.color-sequence-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: auto;
+  transform-style: preserve-3d;
+}
+
+/* Color buttons */
+.color-btn {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  border-radius: 4px;
+  cursor: pointer;
+  transform: translateZ(5px) translate(-50%, -50%) rotate(45deg);
+  transition: all 0.15s ease;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  background: var(--btn-color);
+}
+
+.color-btn:hover {
+  transform: translateZ(7px) translate(-50%, -50%) rotate(45deg) scale(1.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.color-btn:active,
+.color-btn.clicked {
+  transform: translateZ(2px) translate(-50%, -50%) rotate(45deg) scale(0.95);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Active state when showing sequence */
+.color-btn.active {
+  background: var(--btn-color-light) !important;
+  box-shadow: 0 0 15px var(--btn-color), 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  transform: translateZ(8px) translate(-50%, -50%) rotate(45deg) scale(1.1);
+}
+
+/* Submit button */
+/* Disable color sequence on resolved subfaces */
+.subface.solved .color-sequence-container,
+.subface.failed .color-sequence-container {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ========== WIRE CUTTING DEVICE (BOMB DEFUSAL) ========== */
+.wire-cutting-container {
+  position: relative;
+  width: 80%;
+  height: 90%;
+  min-height: 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 5px;
+  background: linear-gradient(145deg, #2c3e50, #34495e);
+  border-radius: 8px;
+  border: 2px solid #1a252f;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Individual wire element - agora vertical */
+.wire-element {
+  width: 8px;
+  height: 100%;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Wire connectors - agora em cima e embaixo */
+.wire-connector {
+  width: 12px;
+  height: 6px;
+  background: linear-gradient(145deg, #95a5a6, #7f8c8d);
+  border-radius: 2px;
+  border: 1px solid #34495e;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transform: translateZ(2px);
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.wire-connector.top {
+  margin-bottom: 2px;
+}
+
+.wire-connector.bottom {
+  margin-top: 2px;
+}
+
+/* Wire body - agora vertical e contínuo */
+.wire-body {
+  flex: 1;
+  width: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  position: relative;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-2L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/><path fill="black" d="m22 3-1.5 1.5L17 1l-1.5 1.5L17 4l-1.5 1.5L17 7l3.5-3.5L22 5V3z"/></svg>')
+      12 12,
+    crosshair;
+  transition: all 0.2s ease;
+  min-height: 0; /* Permite que o flex funcione corretamente */
+}
+
+/* Wire contínuo - uma peça só inicialmente */
+.wire-continuous {
+  width: 6px;
+  height: 110%;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+  transform: translateZ(1px);
+  transition: all 0.3s ease;
+  position: absolute;
+  left: 3px;
+  top: -5px;
+}
+
+/* Efeito de corte - dois segmentos separados */
+.wire-element.cut .wire-continuous {
+  display: none; /* Esconde o fio contínuo */
+}
+
+.wire-element.cut .wire-body::before,
+.wire-element.cut .wire-body::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 110%;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+  background: var(--wire-color, var(--wire-pattern, #3498db));
+  transition: all 0.5s ease;
+}
+
+/* Segmento superior cortado */
+.wire-element.cut .wire-body::before {
+  top: -5px;
+  left: 3px;
+  height: 47%;
+  transform: translateX(-0.5px) rotate(-1deg);
+  transform-origin: bottom center;
+  border-radius: 4px 4px 0 0;
+  /* Adiciona o cobre interno na ponta cortada */
+  border-bottom: 2px solid #cd7f32; /* Cor do cobre */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3), inset 0 -2px 0 #b8860b; /* Cobre mais escuro interno */
+}
+
+/* Segmento inferior cortado */
+.wire-element.cut .wire-body::after {
+  left: 3px;
+  bottom: -5px;
+  height: 47%;
+  transform: translateX(0.5px) rotate(1deg);
+  transform-origin: top center;
+  border-radius: 0 0 4px 4px;
+  /* Adiciona o cobre interno na ponta cortada */
+  border-top: 2px solid #cd7f32; /* Cor do cobre */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3), inset 0 2px 0 #b8860b; /* Cobre mais escuro interno */
+}
+
+/* Remove cursor quando cortado */
+.wire-element.cut .wire-body {
+  cursor: default;
+}
+
+/* Sparks effect */
+.wire-sparks {
+  position: absolute;
+  font-size: 12px;
+  animation: spark-flash 1s ease-out;
+  pointer-events: none;
+}
+
+@keyframes spark-flash {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Explosion effect */
+.wire-explosion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  animation: explosion-effect 2s ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes explosion-effect {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+/* Disable wire cutting on resolved subfaces */
+.subface.solved .wire-cutting-container,
+.subface.failed .wire-cutting-container {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.wire-segment {
+  height: 5px;
+}
+
+.wire-cut-zone {
+  width: 16px;
+  height: 10px;
+}
+
+/* Sparks effect */
+.wire-sparks {
+  animation: spark-flash 1.5s ease-out;
+}
+
+@keyframes spark-flash {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+/* Bomb Timer 3D integrado no cubo */
+.bomb-timer-3d {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(5px);
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 3px solid #e74c3c;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 20px rgba(231, 76, 60, 0.4);
+  font-family: "Courier New", monospace;
+  text-align: center;
+  min-width: 140px;
+  transform-style: preserve-3d;
+}
+
+/* Timer warning states para 3D */
+.bomb-timer-3d.warning {
+  border-color: #f39c12;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 20px rgba(243, 156, 18, 0.4);
+}
+
+.bomb-timer-3d.warning .segment.active {
+  background: #f39c12;
+  box-shadow: 0 0 6px rgba(243, 156, 18, 0.8),
+    inset 0 1px 2px rgba(255, 200, 100, 0.3);
+}
+
+.bomb-timer-3d.warning .led-colon {
+  color: #f39c12;
+  text-shadow: 0 0 8px rgba(243, 156, 18, 0.8);
+}
+
+.bomb-timer-3d.critical {
+  border-color: #e74c3c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 30px rgba(231, 76, 60, 0.6);
+  animation: timer-pulse-3d 1s ease-in-out infinite alternate;
+}
+
+.bomb-timer-3d.critical .segment.active {
+  background: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 1),
+    inset 0 1px 2px rgba(255, 100, 100, 0.4);
+}
+
+.bomb-timer-3d.critical .led-colon {
+  color: #e74c3c;
+  text-shadow: 0 0 12px rgba(231, 76, 60, 1);
+}
+
+@keyframes timer-pulse-3d {
+  0% {
+    transform: translate(-50%, -50%) translateZ(5px) scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 30px rgba(231, 76, 60, 0.6);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateZ(8px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 0 40px rgba(231, 76, 60, 0.8);
+  }
 }

@@ -7,36 +7,106 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Indicador de sequência -->
-    <div class="sequence-indicator">
-      <div class="sequence-dot"></div>
-      <div class="sequence-dot"></div>
-      <div class="sequence-dot"></div>
+    <div class="instructions-panel collapsed">
+      <div class="instructions-content">
+        <h3>Instruções</h3>
+        <div class="instruction-list" id="instruction-list">
+          <!-- Instruções serão geradas dinamicamente -->
+        </div>
+      </div>
     </div>
 
-    <!-- Cubo 3D -->
+    <!-- Botão de toggle das instruções -->
+    <button class="instructions-toggle" aria-label="Toggle Instructions">
+      <span class="toggle-icon">📋</span>
+    </button>
+
+    <!-- Seed display -->
+    <div class="seed-display" id="seed-display">
+      Seed: <span id="seed-value">0000000000</span>
+    </div>
+
     <div class="scene">
       <div class="cube">
         <div class="face front">
-          <div class="subface" data-subface="front-1"></div>
-          <div class="subface" data-subface="front-2"></div>
-          <div class="subface" data-subface="front-3"></div>
-          <div class="subface" data-subface="front-4"></div>
+          <div class="subface" data-subface="front-1">
+            <div class="face-label">F1</div>
+          </div>
+          <div class="subface" data-subface="front-2">
+            <div class="face-label">F2</div>
+          </div>
+          <div class="subface" data-subface="front-3">
+            <div class="face-label">F3</div>
+          </div>
+          <div class="subface" data-subface="front-4">
+            <div class="face-label">F4</div>
+          </div>
         </div>
         <div class="face back">
-          <div class="subface" data-subface="back-1"></div>
-          <div class="subface" data-subface="back-2"></div>
-          <div class="subface" data-subface="back-3"></div>
-          <div class="subface" data-subface="back-4"></div>
+          <div class="subface" data-subface="back-1">
+            <div class="face-label">B1</div>
+          </div>
+          <div class="subface" data-subface="back-2">
+            <div class="face-label">B2</div>
+          </div>
+          <div class="subface" data-subface="back-3">
+            <div class="face-label">B3</div>
+          </div>
+          <div class="subface" data-subface="back-4">
+            <div class="face-label">B4</div>
+          </div>
         </div>
         <div class="face right"></div>
         <div class="face left"></div>
-        <div class="face top"></div>
+        <div class="face top">
+          <div class="timer-display led-display">
+            <div class="digit-group">
+              <div class="led-digit" id="minutes-tens">
+                <div class="segment segment-a"></div>
+                <div class="segment segment-b"></div>
+                <div class="segment segment-c"></div>
+                <div class="segment segment-d"></div>
+                <div class="segment segment-e"></div>
+                <div class="segment segment-f"></div>
+                <div class="segment segment-g"></div>
+              </div>
+              <div class="led-digit" id="minutes-ones">
+                <div class="segment segment-a"></div>
+                <div class="segment segment-b"></div>
+                <div class="segment segment-c"></div>
+                <div class="segment segment-d"></div>
+                <div class="segment segment-e"></div>
+                <div class="segment segment-f"></div>
+                <div class="segment segment-g"></div>
+              </div>
+            </div>
+            <div class="led-colon">:</div>
+            <div class="digit-group">
+              <div class="led-digit" id="seconds-tens">
+                <div class="segment segment-a"></div>
+                <div class="segment segment-b"></div>
+                <div class="segment segment-c"></div>
+                <div class="segment segment-d"></div>
+                <div class="segment segment-e"></div>
+                <div class="segment segment-f"></div>
+                <div class="segment segment-g"></div>
+              </div>
+              <div class="led-digit" id="seconds-ones">
+                <div class="segment segment-a"></div>
+                <div class="segment segment-b"></div>
+                <div class="segment segment-c"></div>
+                <div class="segment segment-d"></div>
+                <div class="segment segment-e"></div>
+                <div class="segment segment-f"></div>
+                <div class="segment segment-g"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="face bottom"></div>
       </div>
     </div>
 
-    <!-- Overlay de mensagens -->
     <div class="overlay">
       <div class="message"></div>
       <button class="retry-btn">Tentar Novamente</button>
