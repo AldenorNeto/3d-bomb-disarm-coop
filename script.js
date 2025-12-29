@@ -1076,21 +1076,392 @@ function generateInstructions() {
 
     const instructionText = generateInstructionText(template);
 
-    // Cria o elemento da instrução
+    // Cria o elemento da instrução com preview
     const instructionItem = document.createElement("div");
     instructionItem.className = "instruction-item";
 
-    const faceIndex = document.createElement("span");
-    faceIndex.className = "face-index";
-    faceIndex.textContent = faceLabels[subfaceId] || subfaceId;
+    // Cria o preview do dispositivo como referência
+    const devicePreview = document.createElement("div");
+    devicePreview.className = "device-preview";
+    devicePreview.dataset.subface = `${subfaceId}-instruction-preview`;
+
+    // Renderiza o preview do dispositivo
+    renderSubfacePreview(devicePreview, template, `${subfaceId}-instruction`);
 
     const instructionTextEl = document.createElement("span");
     instructionTextEl.className = "instruction-text";
     instructionTextEl.textContent = instructionText;
 
-    instructionItem.appendChild(faceIndex);
+    instructionItem.appendChild(devicePreview);
     instructionItem.appendChild(instructionTextEl);
     instructionList.appendChild(instructionItem);
+  });
+
+  // Gera também as visualizações das subfaces
+  generateSubfacesPreview();
+}
+
+// Gera visualizações das subfaces no painel de instruções
+function generateSubfacesPreview() {
+  const previewContainer = document.getElementById("subfaces-preview");
+  if (!previewContainer) return;
+
+  // Limpa previews existentes
+  previewContainer.innerHTML = "";
+
+  // Mapeamento de face para label
+  const faceLabels = {
+    "front-1": "F1",
+    "front-2": "F2",
+    "front-3": "F3",
+    "front-4": "F4",
+    "back-1": "B1",
+    "back-2": "B2",
+    "back-3": "B3",
+    "back-4": "B4",
+  };
+
+  // Para cada subface, cria uma visualização
+  Object.keys(gameConfig.subfaces).forEach((subfaceId) => {
+    const templateId = gameConfig.subfaces[subfaceId];
+    const template = getTemplateById(templateId);
+
+    if (!template) return;
+
+    // Cria container da preview
+    const previewEl = document.createElement("div");
+    previewEl.className = "subface-preview";
+    previewEl.dataset.subface = `${subfaceId}-preview`;
+
+    // Adiciona label da face
+    const faceLabel = document.createElement("div");
+    faceLabel.className = "face-label";
+    faceLabel.textContent = faceLabels[subfaceId] || subfaceId;
+    previewEl.appendChild(faceLabel);
+
+    // Renderiza os dispositivos (versão não-interativa)
+    renderSubfacePreview(previewEl, template, `${subfaceId}-preview`);
+
+    previewContainer.appendChild(previewEl);
+  });
+}
+
+// Renderiza uma preview da subface (versão simplificada e não-interativa)
+function renderSubfacePreview(previewEl, template, previewId) {
+  if (!template || !template.devices) return;
+
+  // Render devices from template (simplified version)
+  template.devices.forEach((device, index) => {
+    const uniqueDeviceId = `${previewId}-${device.id}-${index}`;
+
+    if (device.type === "button") {
+      // Create simplified 3D button
+      const btn = document.createElement("div");
+      btn.className = "game-btn-3d";
+      btn.dataset.id = uniqueDeviceId;
+
+      const top = document.createElement("div");
+      top.className = "cylinder-top";
+      top.style.background = `radial-gradient(circle at 35% 35%, ${lightenColor(
+        device.color,
+        30
+      )}, ${device.color} 50%, ${darkenColor(device.color, 20)})`;
+      top.textContent = device.label;
+      btn.appendChild(top);
+
+      const bottom = document.createElement("div");
+      bottom.className = "cylinder-bottom";
+      bottom.style.background = darkenColor(device.color, 40);
+      btn.appendChild(bottom);
+
+      const body = document.createElement("div");
+      body.className = "cylinder-body";
+      createCylinderPanels(body, 24, 25, device.color); // Menos painéis para performance
+      btn.appendChild(body);
+
+      previewEl.appendChild(btn);
+    } else if (device.type === "crank") {
+      // Create simplified crank
+      const crankEl = document.createElement("div");
+      crankEl.className = "crank-3d-full";
+      crankEl.dataset.id = uniqueDeviceId;
+
+      const base = document.createElement("div");
+      base.className = "crank-base-3d";
+      const baseTop = document.createElement("div");
+      baseTop.className = "crank-base-top";
+      baseTop.style.background = device.color || "#3498db";
+      base.appendChild(baseTop);
+      crankEl.appendChild(base);
+
+      const arm = document.createElement("div");
+      arm.className = "crank-arm-3d";
+      const knob = document.createElement("div");
+      knob.className = "crank-knob-3d";
+      knob.style.background = device.color || "#3498db";
+      arm.appendChild(knob);
+      crankEl.appendChild(arm);
+
+      previewEl.appendChild(crankEl);
+    } else if (device.type === "switch") {
+      // Create simplified switch
+      const switchEl = document.createElement("div");
+      switchEl.className = "switch-3d";
+      switchEl.dataset.id = uniqueDeviceId;
+
+      const track = document.createElement("div");
+      track.className = "switch-track-3d";
+      switchEl.appendChild(track);
+
+      const knob = document.createElement("div");
+      knob.className = "switch-knob-3d";
+      switchEl.appendChild(knob);
+
+      previewEl.appendChild(switchEl);
+    } else if (device.type === "click-counter") {
+      // Create simplified counter with tank
+      const counterContainer = document.createElement("div");
+      counterContainer.className = "counter-container-preview";
+      counterContainer.dataset.id = uniqueDeviceId;
+      counterContainer.style.cssText = `
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 3px;
+      `;
+
+      // Counter button (pump)
+      const counterEl = document.createElement("div");
+      counterEl.className = "click-counter";
+      counterEl.style.cssText = `
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: ${device.color || "#9b59b6"};
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        color: white;
+        font-weight: bold;
+      `;
+      counterEl.textContent = "0";
+
+      // Tank visual
+      const tank = document.createElement("div");
+      tank.className = "counter-tank-preview";
+      tank.style.cssText = `
+        width: 12px;
+        height: 35px;
+        background: linear-gradient(to top, 
+          rgba(52, 152, 219, 0.3) 0%, 
+          rgba(52, 152, 219, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+      `;
+
+      // Tank level indicator
+      const tankLevel = document.createElement("div");
+      tankLevel.className = "tank-level";
+      tankLevel.style.cssText = `
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 0%;
+        background: linear-gradient(to top, #3498db, #5dade2);
+        transition: height 0.3s ease;
+        border-radius: 0 0 1px 1px;
+      `;
+
+      tank.appendChild(tankLevel);
+      counterContainer.appendChild(tank);
+      counterContainer.appendChild(counterEl);
+      previewEl.appendChild(counterContainer);
+    } else if (device.type === "keypad" || device.type === "keypad-runes") {
+      // Create keypad with real numbers/symbols
+      const keypadEl = document.createElement("div");
+      keypadEl.className =
+        device.type === "keypad-runes" ? "keypad-3d keypad-runes" : "keypad-3d";
+      keypadEl.dataset.id = uniqueDeviceId;
+
+      const display = document.createElement("div");
+      display.className = "keypad-display-3d";
+      keypadEl.appendChild(display);
+
+      const buttonsContainer = document.createElement("div");
+      buttonsContainer.className = "keypad-buttons-3d keypad-preview";
+      buttonsContainer.style.cssText = `
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1px;
+        padding: 3px;
+      `;
+
+      if (device.type === "keypad-runes") {
+        // Show runic symbols
+        const runicSymbols = ["ᚠ", "ᚢ", "ᚦ", "ᚹ", "ᚺ", "ᚾ", "ᛈ", "ᛟ", "ᛞ", "ᛚ"];
+        runicSymbols.slice(0, 10).forEach((symbol) => {
+          const key = document.createElement("div");
+          key.className = "keypad-key keypad-key-mini";
+          key.textContent = symbol;
+          key.style.cssText = `
+            width: 8px;
+            height: 8px;
+            font-size: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(189, 195, 199, 0.9);
+            color: #2c3e50;
+            border-radius: 1px;
+          `;
+          buttonsContainer.appendChild(key);
+        });
+      } else {
+        // Show real keypad numbers if available
+        const keypadNumbers = device.keypadNumbers || [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+        ];
+        keypadNumbers.slice(0, 10).forEach((num) => {
+          const key = document.createElement("div");
+          key.className = "keypad-key keypad-key-mini";
+          key.textContent = String(num).padStart(2, "0");
+          key.style.cssText = `
+            width: 8px;
+            height: 8px;
+            font-size: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(52, 73, 94, 0.8);
+            color: #ecf0f1;
+            border-radius: 1px;
+          `;
+          buttonsContainer.appendChild(key);
+        });
+      }
+
+      keypadEl.appendChild(buttonsContainer);
+      previewEl.appendChild(keypadEl);
+    } else if (device.type === "safe-dial") {
+      // Create simplified safe dial
+      const dialContainer = document.createElement("div");
+      dialContainer.className = "safe-dial-container";
+      dialContainer.dataset.id = uniqueDeviceId;
+
+      const outerRing = document.createElement("div");
+      outerRing.className = "safe-dial-outer-ring";
+      outerRing.style.background = device.color || "#2c3e50";
+      dialContainer.appendChild(outerRing);
+
+      const innerDial = document.createElement("div");
+      innerDial.className = "safe-dial-inner";
+      innerDial.style.background = device.color || "#2c3e50";
+      dialContainer.appendChild(innerDial);
+
+      previewEl.appendChild(dialContainer);
+    } else if (device.type === "color-sequence") {
+      // Create color sequence with real sequence
+      const container = document.createElement("div");
+      container.className = "color-sequence-container";
+      container.dataset.id = uniqueDeviceId;
+
+      const sequence = device.sequence || ["red", "blue", "green", "yellow"];
+      const colorMap = {
+        red: "#e74c3c",
+        blue: "#3498db",
+        green: "#2ecc71",
+        yellow: "#f1c40f",
+      };
+
+      const positions = [
+        { x: -22, y: 0 },
+        { x: 0, y: -22 },
+        { x: 0, y: 22 },
+        { x: 22, y: 0 },
+      ];
+
+      // Show the actual sequence colors
+      sequence.slice(0, 4).forEach((_, i) => {
+        const button = document.createElement("div");
+        button.className = `color-btn`;
+
+        button.style.cssText = `
+          rotate(45deg)
+          position: absolute;
+          width: 28px;
+          height: 28px;
+          border-radius: 1%;
+          left: calc(50% + ${positions[i % 4].x}px);
+          top: calc(25% + ${positions[i % 4].y}px);
+          background: ${Object.values(colorMap)[i]};
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        `;
+        container.appendChild(button);
+      });
+
+      previewEl.appendChild(container);
+    } else if (device.type === "wire-cutting") {
+      // Create wire cutting with real wire colors
+      const container = document.createElement("div");
+      container.className = "wire-cutting-container";
+      container.id = "wire-cutting-container";
+      container.dataset.id = uniqueDeviceId;
+      container.style.cssText = `
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      `;
+
+      const wires = device.wires || [
+        { colors: ["red", "yellow"] },
+        { colors: ["blue", "white"] },
+        { colors: ["green", "black"] },
+      ];
+
+      const wireColorMap = {
+        red: "#e74c3c",
+        blue: "#3498db",
+        green: "#2ecc71",
+        yellow: "#f1c40f",
+        white: "#ecf0f1",
+        black: "#000000ff",
+        orange: "#e67e22",
+      };
+
+      wires.slice(0, 5).forEach((wire, i) => {
+        const wireEl = document.createElement("div");
+        wireEl.className = "wire-element";
+        wireEl.style.cssText = `
+          border-radius: 2px;
+        `;
+
+        if (wire.colors && wire.colors.length === 2) {
+          // Striped wire
+          const color1 = wireColorMap[wire.colors[0]];
+          const color2 = wireColorMap[wire.colors[1]];
+          wireEl.style.background = `repeating-linear-gradient(
+            45deg,
+            ${color1} 0px,
+            ${color1} 12px,
+            ${color2} 12px,
+            ${color2} 24px
+          )`;
+        } else {
+          // Single color wire
+          wireEl.style.background =
+            wireColorMap[wire.colors?.[0] || wire.color] || "#e74c3c";
+        }
+
+        container.appendChild(wireEl);
+      });
+
+      previewEl.appendChild(container);
+    }
   });
 }
 
@@ -1133,9 +1504,32 @@ function generateInstructionText(template) {
 
     case "template-safe-dial":
       const combination = solution.find((s) => s.safeDialId)?.combination || [];
-      return `Gire o cofre para os números: ${combination
-        .map((v) => " " + v + " ")
-        .join(", ")}`;
+
+      // Calcula as instruções de rotação baseadas na sequência
+      const rotationInstructions = [];
+      let currentPosition = 0; // Posição inicial do cofre
+
+      combination.forEach((targetPosition, index) => {
+        // Calcula a diferença entre posição atual e alvo
+        let clockwiseDiff = (targetPosition - currentPosition + 100) % 100;
+        let counterclockwiseDiff =
+          (currentPosition - targetPosition + 100) % 100;
+
+        // Escolhe a direção mais curta
+        if (clockwiseDiff <= counterclockwiseDiff) {
+          if (clockwiseDiff > 0) {
+            rotationInstructions.push(`${clockwiseDiff}° horário`);
+          }
+        } else {
+          if (counterclockwiseDiff > 0) {
+            rotationInstructions.push(`${counterclockwiseDiff}° anti-horário`);
+          }
+        }
+
+        currentPosition = targetPosition;
+      });
+
+      return `Gire o cofre: ${rotationInstructions.join(", ")}`;
 
     case "template-color-sequence":
       const colorSeq = solution.find((s) => s.colorSequenceId)?.sequence || [];
@@ -1873,12 +2267,6 @@ function handleCounterClick(counterId, subfaceId) {
     if (display) {
       // Não mostra mais a quantidade, apenas mantém o texto "PUMP"
       display.textContent = "PUMP";
-
-      // Animação visual do clique
-      counterEl.classList.add("clicked-animation");
-      setTimeout(() => {
-        counterEl.classList.remove("clicked-animation");
-      }, 150);
 
       // Atualiza o tanque visual
       updateTankLevel(
@@ -3416,9 +3804,9 @@ function renderWireCutting(subfaceEl, device, subfaceId) {
       continuousWire.style.background = `repeating-linear-gradient(
         45deg,
         ${color1} 0px,
-        ${color1} 3px,
-        ${color2} 3px,
-        ${color2} 6px
+        ${color1} 4px,
+        ${color2} 4px,
+        ${color2} 8px
       )`;
       continuousWire.dataset.color1 = color1;
       continuousWire.dataset.color2 = color2;
@@ -3481,7 +3869,7 @@ function handleWireCut(deviceId, wireId, subfaceId) {
       green: "#2ecc71",
       yellow: "#f1c40f",
       white: "#ecf0f1",
-      black: "#2c3e50",
+      black: "#000000",
       orange: "#e67e22",
     };
 
@@ -3496,9 +3884,9 @@ function handleWireCut(deviceId, wireId, subfaceId) {
         `repeating-linear-gradient(
         45deg,
         ${color1} 0px,
-        ${color1} 3px,
-        ${color2} 3px,
-        ${color2} 6px
+        ${color1} 5px,
+        ${color2} 5px,
+        ${color2} 16px
       )`
       );
     } else {
